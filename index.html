@@ -322,7 +322,7 @@ const DISEASES = [
   { sub:'nephro', zh:'多囊腎', en:'Polycystic kidney disease', gq:'KDIGO[ti] AND "polycystic kidney"[ti] AND "Kidney Int"[ta]' },
   { sub:'nephro', zh:'腎病症候群', en:'Nephrotic syndrome', gq:'KDIGO[ti] AND glomerular[ti] AND "Kidney Int"[ta]' },
   // 內分泌新陳代謝
-  { sub:'endo', zh:'第2型糖尿病', en:'Type 2 diabetes mellitus', gq:'("management of hyperglycemia"[ti] OR "management of hyperglycaemia"[ti]) AND "type 2 diabetes"[ti] AND "Diabetes Care"[ta]' },
+  { sub:'endo', zh:'第2型糖尿病', en:'Type 2 diabetes mellitus', ds:1, gq:'standards[ti] AND care[ti] AND diabetes[ti] AND (pharmacologic[ti] OR glycemic[ti]) AND "Diabetes Care"[ta]' },
   { sub:'endo', zh:'第1型糖尿病', en:'Type 1 diabetes mellitus', gq:'"type 1 diabetes"[ti] AND adults[ti] AND consensus[ti] AND "Diabetes Care"[ta]' },
   { sub:'endo', zh:'糖尿病酮酸血症', en:'Diabetic ketoacidosis', gq:'hyperglycemic[ti] AND (crisis[ti] OR crises[ti]) AND "Diabetes Care"[ta]' },
   { sub:'endo', zh:'甲狀腺功能亢進症', en:'Hyperthyroidism', gq:'hyperthyroidism[ti] AND thyrotoxicosis[ti] AND "Thyroid"[ta]' },
