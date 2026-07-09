@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>內科疾病臨床指引索引</title>
+<meta name="description" content="依內科次專科與疾病分類，即時彙整 NEJM、Lancet、JAMA、BMJ、Diabetes Care、KDIGO、ATA 等重點期刊近年的臨床指引，並標示合法免費全文。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F4F3;
+    --surface:#FFFFFF;
+    --ink:#17211E;
+    --ink-2:#4B5A55;
+    --ink-3:#7C8A85;
+    --line:#DCE3E1;
+    --line-2:#E8ECEB;
+    --accent:#159A82;        /* endocrinology teal — global accent */
+    --free:#1F9D57;          /* open-access green */
+    --free-bg:#E8F5EC;
+    --focus:#0E7C68;
+    --serif:'Noto Serif TC',serif;
+    --sans:'Noto Sans TC',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+    --shadow:0 1px 2px rgba(23,33,30,.04),0 8px 24px -18px rgba(23,33,30,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  a{color:inherit}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;font-weight:500;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* ---------- sticky header ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:40;background:rgba(241,244,243,.86);
+    backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{display:flex;align-items:center;gap:16px;height:56px}
+  .brand{font-family:var(--serif);font-weight:700;font-size:1.02rem;white-space:nowrap}
+  .brand span{color:var(--accent)}
+  .nav-scroll{
+    display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+    -ms-overflow-style:none;margin-left:auto;padding:8px 0;
+  }
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+    font-size:.82rem;font-weight:500;color:var(--ink-2);
+    padding:5px 12px;border-radius:999px;border:1px solid transparent;
+    background:transparent;cursor:pointer;transition:background .15s,color .15s,border-color .15s;
+  }
+  .chip:hover{background:#fff;border-color:var(--line)}
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip.active{background:#fff;border-color:var(--line);color:var(--ink)}
+  @media(max-width:760px){.brand{font-size:.9rem}.brand em{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 40px}
+  .hero .eyebrow{margin-bottom:18px}
+  .hero h1{
+    font-family:var(--serif);font-weight:700;letter-spacing:-.01em;
+    font-size:clamp(2.1rem,5.4vw,3.4rem);line-height:1.12;margin:0 0 20px;
+  }
+  .hero h1 b{color:var(--accent);font-weight:700}
+  .lede{font-size:1.04rem;color:var(--ink-2);max-width:60ch;margin:0 0 30px}
+
+  .controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+  .search{
+    position:relative;flex:1 1 300px;min-width:0;
+  }
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+  .search input{
+    width:100%;font-family:var(--sans);font-size:.95rem;color:var(--ink);
+    padding:12px 14px 12px 42px;border:1px solid var(--line);border-radius:10px;
+    background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  .search input::placeholder{color:var(--ink-3)}
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(21,154,130,.14)}
+
+  .toggle{display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
+    font-size:.9rem;font-weight:500;color:var(--ink);padding:8px 4px}
+  .toggle input{position:absolute;opacity:0;width:1px;height:1px}
+  .track{width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;
+    transition:background .18s;flex:none}
+  .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .18s}
+  .toggle input:checked + .track{background:var(--free)}
+  .toggle input:checked + .track::after{transform:translateX(18px)}
+  .toggle input:focus-visible + .track{box-shadow:0 0 0 3px rgba(31,157,87,.3)}
+
+  .link-btn{background:none;border:none;font-family:var(--sans);font-size:.9rem;
+    color:var(--accent);font-weight:500;cursor:pointer;padding:8px 4px;
+    text-underline-offset:3px;text-decoration:underline;text-decoration-thickness:1px}
+  .link-btn:hover{color:var(--focus)}
+
+  .meta-line{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);
+    letter-spacing:.04em;margin-top:22px;display:flex;gap:18px;flex-wrap:wrap}
+  .meta-line b{color:var(--ink-2);font-weight:600}
+
+  /* ---------- sections ---------- */
+  .index{padding:24px 0 60px}
+  .sec{padding-top:26px;scroll-margin-top:76px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;padding:14px 0 18px;
+    border-top:1px solid var(--line);position:relative}
+  .sec-head::before{content:"";position:absolute;top:-1px;left:0;width:56px;height:3px;background:var(--sc)}
+  .sec-code{font-family:var(--mono);font-size:.74rem;font-weight:600;letter-spacing:.14em;
+    color:var(--sc);white-space:nowrap}
+  .sec-title{font-family:var(--serif);font-weight:600;font-size:1.42rem;margin:0}
+  .sec-en{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);letter-spacing:.06em}
+  .sec-count{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--ink-3);white-space:nowrap}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .card{
+    position:relative;background:var(--surface);border:1px solid var(--line);
+    border-radius:12px;padding:16px 16px 12px 18px;overflow:hidden;
+    transition:border-color .16s,box-shadow .16s;
+  }
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sc);opacity:.5;transition:opacity .16s}
+  .card:hover{border-color:var(--sc);box-shadow:var(--shadow)}
+  .card:hover::before{opacity:1}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+  .disease{font-weight:500;font-size:1.04rem;line-height:1.3;margin:0 0 2px}
+  .disease-en{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.02em}
+  .curated-tag{display:inline-block;font-family:var(--mono);font-size:.6rem;font-weight:600;
+    letter-spacing:.06em;color:var(--accent);background:rgba(21,154,130,.1);
+    border-radius:4px;padding:1px 5px;vertical-align:1px}
+  .tw-link{font-family:var(--mono);font-size:.68rem;font-weight:500;color:#1E7A48;flex:none;
+    border:1px solid #CBE7D6;border-radius:6px;padding:4px 8px;text-decoration:none;white-space:nowrap;transition:.15s}
+  .tw-link:hover{background:var(--free);border-color:var(--free);color:#fff}
+  .tw-link:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+  .revs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+  .rev{padding-top:10px;border-top:1px dashed var(--line-2)}
+  .rev:first-child{border-top:none;padding-top:0}
+  .rev-t{font-size:.9rem;line-height:1.42;color:var(--ink);text-decoration:none;font-weight:500}
+  .rev-t:hover{color:var(--sc);text-decoration:underline;text-underline-offset:2px}
+  .rev-meta{display:flex;align-items:center;gap:8px;margin-top:4px;
+    font-family:var(--mono);font-size:.67rem;color:var(--ink-3);flex-wrap:wrap}
+  .rev-jour{color:var(--sc);font-weight:600;letter-spacing:.02em}
+  .free-tag{display:inline-flex;align-items:center;gap:4px;color:var(--free);
+    background:var(--free-bg);border-radius:5px;padding:1px 6px;font-weight:600}
+  .free-tag svg{width:10px;height:10px}
+  .hint{font-size:.84rem;color:var(--ink-3);line-height:1.5}
+  .hint a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  .skel{height:11px;border-radius:4px;margin:8px 0;
+    background:linear-gradient(90deg,#eef1f0 25%,#e2e8e6 37%,#eef1f0 63%);
+    background-size:400% 100%;animation:sh 1.3s ease infinite}
+  .skel.s2{width:82%}.skel.s3{width:64%}
+  @keyframes sh{0%{background-position:100% 0}100%{background-position:0 0}}
+  @media (prefers-reduced-motion:reduce){.skel{animation:none}}
+  .card-more{margin-top:12px;padding-top:9px;border-top:1px solid var(--line-2)}
+  .card-more a{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);
+    font-size:.68rem;color:var(--ink-3);text-decoration:none}
+  .card-more a:hover{color:var(--sc)}
+
+  .empty{display:none;text-align:center;color:var(--ink-3);padding:56px 0;font-size:.95rem}
+  .empty.show{display:block}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--ink-3);font-size:.84rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+  footer b{color:var(--ink-2);font-weight:600}
+  footer .mono{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em}
+
+  /* ---------- modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(23,33,30,.44);backdrop-filter:blur(2px);
+    display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--surface);max-width:600px;width:100%;max-height:86vh;overflow:auto;
+    border-radius:16px;padding:30px 30px 26px;box-shadow:0 30px 70px -20px rgba(23,33,30,.5);
+    animation:pop .22s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.modal{animation:none}}
+  .modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px}
+  .modal h2{font-family:var(--serif);font-size:1.3rem;font-weight:600;margin:0}
+  .x{background:none;border:1px solid var(--line);border-radius:8px;width:34px;height:34px;
+    font-size:1.1rem;color:var(--ink-2);cursor:pointer;flex:none;line-height:1}
+  .x:hover{background:var(--paper)}
+  .modal p{color:var(--ink-2);font-size:.92rem;margin:14px 0 4px}
+  .src{border-top:1px solid var(--line-2);padding:14px 0 2px}
+  .src h3{font-size:.96rem;margin:0 0 4px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .src h3 .k{font-family:var(--mono);font-size:.66rem;font-weight:600;color:var(--accent);
+    border:1px solid var(--accent);border-radius:5px;padding:2px 6px;letter-spacing:.05em}
+  .src p{margin:0;font-size:.88rem;color:var(--ink-2)}
+  .note{margin-top:16px;font-size:.82rem;color:var(--ink-3);border-top:1px solid var(--line-2);padding-top:14px}
+  .note code{font-family:var(--mono);font-size:.78rem;background:var(--paper);border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink-2)}
+
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">內科疾病 <span>指引</span> <em>索引</em></div>
+    <nav class="nav-scroll" id="nav" aria-label="次專科導覽"></nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Internal Medicine · Guideline Index</div>
+    <h1>內科疾病<br><b>臨床指引</b>索引</h1>
+    <p class="lede">依內科九大次專科與疾病分類，即時列出各疾病在 NEJM、Lancet、JAMA、Diabetes Care、KDIGO、ATA 等重點期刊、近年會改變處置的<b>臨床指引</b>，以及台灣《內科學誌》的指引／共識，並標示合法可得的免費全文。</p>
+    <div class="controls">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="search" placeholder="搜尋疾病（中／英）…" aria-label="搜尋疾病">
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="freeOnly">
+        <span class="track" aria-hidden="true"></span>
+        只顯示免費全文
+      </label>
+      <button class="link-btn" id="openInfo">免費全文從哪來？</button>
+    </div>
+    <div class="meta-line">
+      <span><b id="subCount">0</b> 次專科</span>
+      <span><b id="disCount">0</b> 疾病主題</span>
+      <span><b id="jourCount">0</b> 本重點期刊 · 近 <b id="yrSpan">3</b> 年</span>
+    </div>
+  </div>
+</header>
+
+<main class="index">
+  <div class="wrap">
+    <div id="sections"></div>
+    <div class="empty" id="empty">找不到符合的疾病，試試其他關鍵字或關閉「只顯示免費全文」。</div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 <b>內科疾病臨床指引索引</b>　｜　實證內科・臨床指引導覽</div>
+    <div class="mono">連結導向各來源合法公開版本 · <a href="https://www.tsim.org.tw/ehc-tsim/s/w/ebook/issueList/index_other/e2d69c71596e444c995fc99048db6c12" target="_blank" rel="noopener" style="color:var(--free)">內科學誌全期目錄</a> · 建議循 DOI 取正式版引用</div>
+  </div>
+</footer>
+
+<!-- modal -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modalTitle">🔓 免費全文從哪裡來？</h2>
+      <button class="x" id="closeInfo" aria-label="關閉">✕</button>
+    </div>
+    <p>標「免費全文」的連結都導向各來源<b>合法公開</b>的版本，不是繞過付費牆。主要有這幾類：</p>
+    <div class="src"><h3><span class="k">OA</span>期刊整本開放取用</h3><p>整本免費、人人可下載。例：Cleveland Clinic Journal of Medicine。</p></div>
+    <div class="src"><h3><span class="k">PMC</span>公開全文</h3><p>期刊把全文存入美國國家醫學圖書館的 PubMed Central 免費資料庫。部分 Mayo Clinic Proceedings、Nature Reviews Disease Primers 等屬此。</p></div>
+    <div class="src"><h3><span class="k">學會</span>台灣學會公益開放全文</h3><p>台灣《<a href="https://www.tsim.org.tw/ehc-tsim/s/w/ebook/issueList/index_other/e2d69c71596e444c995fc99048db6c12" target="_blank" rel="noopener">內科學誌</a>》（台灣內科醫學會）於學會官網提供歷期綜論與文章「全文閱讀」，<b>免費且免登入</b>；《家庭醫學與基層醫療》等亦採公益性質開放。每張卡片的綠色「內科學誌」鈕即搜尋該刊相關<b>綜論與指引</b>（排除個案報告、原著）。</p></div>
+    <div class="src"><h3><span class="k">滾動</span>出版一段時間後免費</h3><p>部分期刊（如 American Family Physician）出版滿一定年限後全文免費。</p></div>
+    <div class="src"><h3><span class="k">選擇性</span>期刊個別免費</h3><p>部分期刊（如 BMJ）對特定文章直接提供免費全文。</p></div>
+    <p class="note">標「自動更新」的疾病已<b>鎖定該指引的權威來源</b>（如 KDIGO、ESC、ACC/AHA、ATA、EULAR、ACR、IDSA、AASLD、ACG、Surviving Sepsis 等），每次開啟即時向 PubMed 查詢並<b>依日期排序</b>，學會一發布新版就自動帶入最新版、無需手動維護；標題連向文件，PMC 有公開全文則標綠色並連向全文。少數依亞型／分期分散的疾病（肺癌、淋巴瘤、癲癇、巴金森）改用重點期刊指引搜尋。要調整鎖定來源，改該疾病的 <code>gq</code> 檢索式即可。引用時建議循 DOI 取正式版。</p>
+  </div>
+</div>
+
+<script>
+/* ===================================================================
+   資料層 —— 直接編輯以下兩個陣列即可增修內容
+   SUBSPECIALTIES：九大內科次專科（含代碼與代表色）
+   DISEASES：疾病主題（sub 對應次專科 id；en 用於 PubMed 檢索）
+   每張卡片底下的文獻清單為即時抓取，免費與否由 PMC 自動判定，
+   不需手動維護（下方保留的 free 欄位已不影響顯示，可留可刪）。
+   tsim 欄位若填入內科學誌全文網址，可覆寫綠色鈕的搜尋連結。
+=================================================================== */
+const SUBSPECIALTIES = [
+  { id:'cardio', code:'CARDIO', zh:'心臟內科',        en:'Cardiology',                 color:'#C43C3C' },
+  { id:'pulm',   code:'PULM',   zh:'胸腔內科',        en:'Pulmonology',                color:'#2E86AB' },
+  { id:'gi',     code:'GI/HEP', zh:'腸胃肝膽科',      en:'Gastroenterology & Hepatology', color:'#C77D0E' },
+  { id:'nephro', code:'NEPHRO', zh:'腎臟內科',        en:'Nephrology',                 color:'#5A67B8' },
+  { id:'endo',   code:'ENDO',   zh:'內分泌新陳代謝科',en:'Endocrinology & Metabolism', color:'#159A82' },
+  { id:'heme',   code:'HEME/ONC',zh:'血液腫瘤科',     en:'Hematology & Oncology',      color:'#8E44AD' },
+  { id:'id',     code:'ID',     zh:'感染科',          en:'Infectious Disease',         color:'#4C9A2A' },
+  { id:'rheum',  code:'RHEUM',  zh:'風濕免疫科',      en:'Rheumatology',               color:'#CF5C8A' },
+  { id:'neuro',  code:'NEURO',  zh:'神經內科',        en:'Neurology',                  color:'#55606E' },
+];
+
+const DISEASES = [
+  // 心臟內科
+  { sub:'cardio', zh:'心臟衰竭', en:'Heart failure', gq:'"heart failure"[ti] AND (AHA[tiab] OR ACC[tiab] OR HFSA[tiab] OR ESC[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
+  { sub:'cardio', zh:'冠狀動脈疾病', en:'Coronary artery disease', gq:'("chronic coronary"[ti] OR "coronary artery disease"[ti]) AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
+  { sub:'cardio', zh:'心房顫動', en:'Atrial fibrillation', gq:'"atrial fibrillation"[ti] AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab] OR HRS[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
+  { sub:'cardio', zh:'高血壓', en:'Hypertension', gq:'("high blood pressure"[ti] OR hypertension[ti]) AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab] OR ESH[tiab]) AND ("Circulation"[ta] OR "Hypertension"[ta] OR "J Am Coll Cardiol"[ta] OR "Eur Heart J"[ta] OR "J Hypertens"[ta])' },
+  { sub:'cardio', zh:'瓣膜性心臟病', en:'Valvular heart disease', gq:'"valvular heart disease"[ti] AND (ESC[tiab] OR EACTS[tiab] OR AHA[tiab] OR ACC[tiab]) AND ("Eur Heart J"[ta] OR "Circulation"[ta] OR "J Am Coll Cardiol"[ta])' },
+  { sub:'cardio', zh:'心肌病變', en:'Cardiomyopathy', gq:'cardiomyopath*[ti] AND (ESC[tiab] OR AHA[tiab] OR ACC[tiab]) AND ("Eur Heart J"[ta] OR "Circulation"[ta] OR "J Am Coll Cardiol"[ta])' },
+  { sub:'cardio', zh:'肺動脈高壓', en:'Pulmonary hypertension', gq:'"pulmonary hypertension"[ti] AND (ESC[tiab] OR ERS[tiab]) AND ("Eur Heart J"[ta] OR "Eur Respir J"[ta])' },
+  { sub:'cardio', zh:'感染性心內膜炎', en:'Infective endocarditis', gq:'endocarditis[ti] AND (ESC[tiab] OR AHA[tiab]) AND ("Eur Heart J"[ta] OR "Circulation"[ta])' },
+  // 胸腔內科
+  { sub:'pulm', zh:'慢性阻塞性肺病', en:'COPD', ds:1, gq:'COPD[ti] AND (GOLD[ti] OR "global strategy"[ti]) AND report[ti] AND ("Lancet Respir Med"[ta] OR "Am J Respir Crit Care Med"[ta] OR "Eur Respir J"[ta])' },
+  { sub:'pulm', zh:'氣喘', en:'Asthma', gq:'asthma[ti] AND (NAEPP[tiab] OR NHLBI[tiab] OR "expert panel"[ti] OR "focused updates"[ti]) AND "J Allergy Clin Immunol"[ta]' },
+  { sub:'pulm', zh:'社區型肺炎', en:'Community-acquired pneumonia', gq:'"community-acquired pneumonia"[ti] AND guideline*[ti] AND "Am J Respir Crit Care Med"[ta]' },
+  { sub:'pulm', zh:'肺栓塞', en:'Pulmonary embolism', gq:'"pulmonary embolism"[ti] AND (ESC[tiab] OR guideline*[ti]) AND ("Eur Heart J"[ta] OR "Eur Respir J"[ta])' },
+  { sub:'pulm', zh:'間質性肺病', en:'Interstitial lung disease', gq:'"pulmonary fibrosis"[ti] AND (ATS[tiab] OR ERS[tiab]) AND "Am J Respir Crit Care Med"[ta]' },
+  { sub:'pulm', zh:'肺癌', en:'Lung cancer' },
+  { sub:'pulm', zh:'阻塞性睡眠呼吸中止症', en:'Obstructive sleep apnea', gq:'"obstructive sleep apnea"[ti] AND (AASM[tiab] OR guideline*[ti]) AND "J Clin Sleep Med"[ta]' },
+  { sub:'pulm', zh:'肺結核', en:'Tuberculosis', gq:'tuberculosis[ti] AND treatment[ti] AND (ATS[tiab] OR IDSA[tiab] OR CDC[tiab]) AND ("Am J Respir Crit Care Med"[ta] OR "Clin Infect Dis"[ta])' },
+  // 腸胃肝膽
+  { sub:'gi', zh:'消化性潰瘍', en:'Peptic ulcer disease', gq:'"Helicobacter pylori"[ti] AND ACG[tiab] AND "Am J Gastroenterol"[ta]' },
+  { sub:'gi', zh:'胃食道逆流', en:'Gastroesophageal reflux disease', gq:'("gastroesophageal reflux"[ti] OR GERD[ti]) AND ACG[tiab] AND "Am J Gastroenterol"[ta]' },
+  { sub:'gi', zh:'發炎性腸道疾病', en:'Inflammatory bowel disease', gq:'("ulcerative colitis"[ti] OR "Crohn"[ti]) AND ACG[tiab] AND "Am J Gastroenterol"[ta]' },
+  { sub:'gi', zh:'肝硬化', en:'Cirrhosis', gq:'(cirrhosis[ti] OR "portal hypertension"[ti]) AND AASLD[tiab] AND "Hepatology"[ta]' },
+  { sub:'gi', zh:'病毒性肝炎', en:'Viral hepatitis', gq:'("hepatitis C"[ti] OR "hepatitis B"[ti]) AND (AASLD[tiab] OR IDSA[tiab]) AND ("Clin Infect Dis"[ta] OR "Hepatology"[ta])' },
+  { sub:'gi', zh:'急性胰臟炎', en:'Acute pancreatitis', gq:'"acute pancreatitis"[ti] AND (ACG[tiab] OR "American College of Gastroenterology"[tiab]) AND "Am J Gastroenterol"[ta]' },
+  { sub:'gi', zh:'大腸直腸癌', en:'Colorectal cancer', gq:'("colorectal cancer"[ti] OR "rectal cancer"[ti] OR "colon cancer"[ti]) AND (ASCO[tiab] OR ESMO[tiab]) AND ("J Clin Oncol"[ta] OR "Ann Oncol"[ta])' },
+  { sub:'gi', zh:'代謝功能障礙相關脂肪肝病', en:'MASLD', gq:'(NAFLD[ti] OR MASLD[ti] OR "fatty liver"[ti] OR steatotic[ti]) AND AASLD[tiab] AND "Hepatology"[ta]' },
+  // 腎臟內科
+  { sub:'nephro', zh:'慢性腎臟病', en:'Chronic kidney disease', gq:'KDIGO[ti] AND "chronic kidney disease"[ti] AND "evaluation and management"[ti] AND "Kidney Int"[ta]' },
+  { sub:'nephro', zh:'急性腎損傷', en:'Acute kidney injury', gq:'KDIGO[ti] AND "acute kidney injury"[ti]' },
+  { sub:'nephro', zh:'腎絲球腎炎', en:'Glomerulonephritis', gq:'KDIGO[ti] AND glomerular[ti] AND "Kidney Int"[ta]' },
+  { sub:'nephro', zh:'糖尿病腎病變', en:'Diabetic kidney disease', gq:'KDIGO[ti] AND diabetes[ti] AND "Kidney Int"[ta]' },
+  { sub:'nephro', zh:'低血鈉症', en:'Hyponatremia', gq:'hyponatr*[ti] AND (guideline*[ti] OR recommendations[ti]) AND ("Eur J Endocrinol"[ta] OR "Nephrol Dial Transplant"[ta] OR "Intensive Care Med"[ta])' },
+  { sub:'nephro', zh:'多囊腎', en:'Polycystic kidney disease', gq:'KDIGO[ti] AND "polycystic kidney"[ti] AND "Kidney Int"[ta]' },
+  { sub:'nephro', zh:'腎病症候群', en:'Nephrotic syndrome', gq:'KDIGO[ti] AND glomerular[ti] AND "Kidney Int"[ta]' },
+  // 內分泌新陳代謝
+  { sub:'endo', zh:'第2型糖尿病', en:'Type 2 diabetes mellitus', gq:'("management of hyperglycemia"[ti] OR "management of hyperglycaemia"[ti]) AND "type 2 diabetes"[ti] AND "Diabetes Care"[ta]' },
+  { sub:'endo', zh:'第1型糖尿病', en:'Type 1 diabetes mellitus', gq:'"type 1 diabetes"[ti] AND adults[ti] AND consensus[ti] AND "Diabetes Care"[ta]' },
+  { sub:'endo', zh:'糖尿病酮酸血症', en:'Diabetic ketoacidosis', gq:'hyperglycemic[ti] AND (crisis[ti] OR crises[ti]) AND "Diabetes Care"[ta]' },
+  { sub:'endo', zh:'甲狀腺功能亢進症', en:'Hyperthyroidism', gq:'hyperthyroidism[ti] AND thyrotoxicosis[ti] AND "Thyroid"[ta]' },
+  { sub:'endo', zh:'甲狀腺功能低下症', en:'Hypothyroidism', gq:'hypothyroidism[ti] AND treatment[ti] AND "Thyroid"[ta]' },
+  { sub:'endo', zh:'甲狀腺結節與甲狀腺癌', en:'Thyroid nodule and cancer', gq:'"American Thyroid Association"[tiab] AND ("differentiated thyroid"[ti] OR "thyroid nodule"[ti] OR "thyroid cancer"[ti]) AND "Thyroid"[ta]' },
+  { sub:'endo', zh:'骨質疏鬆症', en:'Osteoporosis', gq:'osteoporosis[ti] AND (ACP[tiab] OR "physicians"[tiab]) AND "Ann Intern Med"[ta]' },
+  { sub:'endo', zh:'原發性醛固酮增多症', en:'Primary aldosteronism', gq:'"primary aldosteronism"[ti] AND "Endocrine Society"[tiab] AND "J Clin Endocrinol Metab"[ta]' },
+  { sub:'endo', zh:'庫欣氏症候群', en:'Cushing syndrome', gq:'(cushing[ti]) AND (consensus[ti] OR guideline*[ti]) AND ("Lancet Diabetes Endocrinol"[ta] OR "J Clin Endocrinol Metab"[ta] OR "Nat Rev Endocrinol"[ta])' },
+  { sub:'endo', zh:'腎上腺意外瘤', en:'Adrenal incidentaloma', gq:'adrenal[ti] AND incidentaloma*[ti] AND (guideline*[ti] OR ESE[tiab] OR "European Society of Endocrinology"[tiab]) AND ("Eur J Endocrinol"[ta] OR "J Clin Endocrinol Metab"[ta])' },
+  { sub:'endo', zh:'嗜鉻細胞瘤', en:'Pheochromocytoma', gq:'(pheochromocytoma[ti] OR paraganglioma[ti]) AND (guideline*[ti] OR guidance[ti]) AND ("Eur J Endocrinol"[ta] OR "J Clin Endocrinol Metab"[ta])' },
+  { sub:'endo', zh:'肥胖症', en:'Obesity', ds:1, gq:'obesity[ti] AND (ACP[tiab] OR "physicians"[tiab]) AND "Ann Intern Med"[ta]' },
+  { sub:'endo', zh:'原發性副甲狀腺功能亢進症', en:'Primary hyperparathyroidism', gq:'"primary hyperparathyroidism"[ti] AND "J Bone Miner Res"[ta]' },
+  { sub:'endo', zh:'高泌乳素血症', en:'Hyperprolactinemia', gq:'(hyperprolactin*[ti] OR prolactinoma[ti] OR "prolactin-secreting"[ti]) AND (consensus[ti] OR guideline*[ti]) AND ("Nat Rev Endocrinol"[ta] OR "J Clin Endocrinol Metab"[ta] OR "Pituitary"[ta])' },
+  // 血液腫瘤
+  { sub:'heme', zh:'貧血', en:'Anemia', gq:'"iron deficiency"[ti] AND (guideline*[ti] OR guidance[ti] OR management[ti]) AND ("Lancet Haematol"[ta] OR "Blood"[ta] OR "Gut"[ta] OR "Blood Adv"[ta])' },
+  { sub:'heme', zh:'淋巴瘤', en:'Lymphoma' },
+  { sub:'heme', zh:'白血病', en:'Leukemia', ds:1, gq:'(AML[ti] OR "acute myeloid leukemia"[ti] OR "acute myeloid leukaemia"[ti]) AND adults[ti] AND (ELN[tiab] OR recommendations[ti]) AND (management[ti] OR diagnosis[ti]) AND "Blood"[ta]' },
+  { sub:'heme', zh:'多發性骨髓瘤', en:'Multiple myeloma', gq:'"multiple myeloma"[ti] AND (ESMO[tiab] OR IMWG[tiab] OR EHA[tiab]) AND ("Ann Oncol"[ta] OR "Blood"[ta])' },
+  { sub:'heme', zh:'靜脈血栓栓塞', en:'Venous thromboembolism', gq:'(VTE[ti] OR "venous thromboembolism"[ti]) AND antithrombotic[ti] AND ("Chest"[ta] OR "Blood Adv"[ta])' },
+  { sub:'heme', zh:'免疫性血小板低下紫斑症', en:'Immune thrombocytopenia', gq:'"immune thrombocytopenia"[ti] AND (ASH[tiab] OR "American Society of Hematology"[tiab]) AND ("Blood Adv"[ta] OR "Blood"[ta])' },
+  // 感染科
+  { sub:'id', zh:'敗血症', en:'Sepsis', gq:'"surviving sepsis campaign"[ti] AND ("Crit Care Med"[ta] OR "Intensive Care Med"[ta])' },
+  { sub:'id', zh:'蜂窩性組織炎', en:'Cellulitis', gq:'("skin and soft tissue"[ti] OR cellulitis[ti]) AND (IDSA[tiab] OR "Infectious Diseases Society"[tiab]) AND "Clin Infect Dis"[ta]' },
+  { sub:'id', zh:'尿路感染', en:'Urinary tract infection', gq:'("urinary tract infection"[ti] OR "urinary tract infections"[ti]) AND recurrent[ti] AND "J Urol"[ta]' },
+  { sub:'id', zh:'人類免疫缺乏病毒感染', en:'HIV infection', gq:'HIV[ti] AND antiretroviral[ti] AND (recommendations[ti] OR guideline*[ti]) AND "JAMA"[ta]' },
+  { sub:'id', zh:'困難梭狀桿菌感染', en:'Clostridioides difficile infection', gq:'("Clostridioides difficile"[ti] OR "Clostridium difficile"[ti]) AND (IDSA[tiab] OR SHEA[tiab] OR ACG[tiab]) AND ("Clin Infect Dis"[ta] OR "Am J Gastroenterol"[ta])' },
+  { sub:'id', zh:'骨髓炎', en:'Osteomyelitis', gq:'osteomyelitis[ti] AND (IDSA[tiab] OR guideline*[ti]) AND "Clin Infect Dis"[ta]' },
+  // 風濕免疫
+  { sub:'rheum', zh:'類風濕性關節炎', en:'Rheumatoid arthritis', gq:'"rheumatoid arthritis"[ti] AND (ACR[tiab] OR EULAR[tiab] OR "American College of Rheumatology"[tiab]) AND ("Arthritis Rheumatol"[ta] OR "Ann Rheum Dis"[ta])' },
+  { sub:'rheum', zh:'全身性紅斑性狼瘡', en:'Systemic lupus erythematosus', gq:'"systemic lupus"[ti] AND (EULAR[tiab] OR ACR[tiab] OR "American College of Rheumatology"[tiab]) AND ("Ann Rheum Dis"[ta] OR "Arthritis Rheumatol"[ta])' },
+  { sub:'rheum', zh:'痛風', en:'Gout', gq:'gout[ti] AND (ACR[tiab] OR EULAR[tiab] OR "American College of Rheumatology"[tiab]) AND ("Arthritis Rheumatol"[ta] OR "Ann Rheum Dis"[ta])' },
+  { sub:'rheum', zh:'骨關節炎', en:'Osteoarthritis', gq:'osteoarthritis[ti] AND (ACR[tiab] OR OARSI[tiab] OR "Arthritis Foundation"[tiab]) AND ("Arthritis Rheumatol"[ta] OR "Osteoarthritis Cartilage"[ta])' },
+  { sub:'rheum', zh:'血管炎', en:'Vasculitis', gq:'("ANCA-associated vasculitis"[ti] OR vasculitis[ti]) AND (EULAR[tiab] OR ACR[tiab]) AND ("Ann Rheum Dis"[ta] OR "Arthritis Rheumatol"[ta])' },
+  { sub:'rheum', zh:'全身性硬化症', en:'Systemic sclerosis', gq:'"systemic sclerosis"[ti] AND EULAR[tiab] AND "Ann Rheum Dis"[ta]' },
+  { sub:'rheum', zh:'修格連氏症候群', en:'Sjögren syndrome', gq:'(sjogren[ti] OR sjögren[ti]) AND (EULAR[tiab] OR ACR[tiab]) AND ("Ann Rheum Dis"[ta] OR "Arthritis Rheumatol"[ta])' },
+  // 神經內科
+  { sub:'neuro', zh:'缺血性腦中風', en:'Ischemic stroke', gq:'"ischemic stroke"[ti] AND ("American Heart"[tiab] OR "American Stroke"[tiab] OR AHA[tiab] OR ASA[tiab]) AND "Stroke"[ta]' },
+  { sub:'neuro', zh:'癲癇', en:'Epilepsy' },
+  { sub:'neuro', zh:'巴金森氏症', en:'Parkinson disease' },
+  { sub:'neuro', zh:'失智症', en:'Dementia', gq:'Alzheimer[ti] AND (criteria[ti] OR workgroup[tiab]) AND "Alzheimers Dement"[ta]' },
+  { sub:'neuro', zh:'偏頭痛', en:'Migraine', gq:'migraine[ti] AND (AHS[tiab] OR "American Headache Society"[tiab]) AND "Headache"[ta]' },
+  { sub:'neuro', zh:'多發性硬化症', en:'Multiple sclerosis', gq:'"multiple sclerosis"[ti] AND (ECTRIMS[tiab] OR EAN[tiab] OR AAN[tiab]) AND (pharmacological[ti] OR "disease-modifying"[ti] OR treatment[ti]) AND ("Mult Scler"[ta] OR "Eur J Neurol"[ta] OR "Neurology"[ta])' },
+  { sub:'neuro', zh:'周邊神經病變', en:'Peripheral neuropathy', gq:'("diabetic polyneuropathy"[ti] OR "painful diabetic"[ti]) AND (AAN[tiab] OR "practice guideline"[ti] OR treatment[ti]) AND "Neurology"[ta]' },
+];
+
+/* ---------- helpers ---------- */
+const subById = Object.fromEntries(SUBSPECIALTIES.map(s=>[s.id,s]));
+
+/* PubMed 只收以下重點期刊的臨床指引（可自行增減，用 NLM 期刊縮寫）。 */
+const JOURNALS = [
+  // 綜合醫學
+  'N Engl J Med','Lancet','JAMA','BMJ','Ann Intern Med',
+  'Nat Rev Dis Primers','Mayo Clin Proc','Cleve Clin J Med','Am Fam Physician',
+  // 次專科
+  'Diabetes Care','Endocr Rev','Lancet Diabetes Endocrinol','J Clin Endocrinol Metab',
+  'Thyroid','Kidney Int','Circulation','Blood','Gut'
+];
+const JOUR_FILTER = '(' + JOURNALS.map(j => '"'+j+'"[ta]').join(' OR ') + ')';
+const GUIDELINE_YEARS = 7;                                    // 指引壽命較長，取近 N 年（可調整）
+const PY_FROM = new Date().getFullYear() - GUIDELINE_YEARS;   // 起始出版年
+
+/* 臨床指引訊號：Guideline 出版類型，或標題含指引／共識／照護標準等字樣 */
+const GUIDE_SIG = '(Guideline[pt] OR "Practice Guideline"[pt] OR guideline*[ti] OR consensus[ti] OR ' +
+                  '"standards of care"[ti] OR "position statement"[ti] OR recommendations[ti])';
+const CORE = ' AND ' + GUIDE_SIG + ' AND ' + JOUR_FILTER +
+             ' AND ("'+PY_FROM+'"[dp] : "3000"[dp]) NOT (correction[ti] OR corrigendum[ti] OR erratum[ti] OR retraction[ti])';
+/* 策展查詢共用：指引訊號閘門 + 雜訊排除（勘誤、評論、系統性回顧、LLM 論文等） */
+const GSIG = ' AND (Guideline[pt] OR "Practice Guideline"[pt] OR guideline*[ti] OR recommendations[ti] OR guidance[ti] OR consensus[ti] OR "standards of care"[ti] OR criteria[ti] OR "global strategy"[ti] OR GOLD[ti] OR "position statement"[ti] OR "practice statement"[ti])';
+const GNX = ' NOT (correction[ti] OR corrigendum[ti] OR erratum[ti] OR retraction[ti] OR withdrawn[ti] OR comment[ti] OR commentary[ti] OR correspondence[ti] OR reply[ti] OR "reader response"[ti] OR "author response"[ti] OR "systematic literature review"[ti] OR "literature review"[ti] OR "in action"[ti] OR commandments[ti] OR readability[ti] OR ChatGPT[tiab] OR "large language model"[tiab] OR "large language models"[tiab] OR adaptation[ti] OR adapted[ti])';
+function termCard(d){
+  if(d.gq) return d.gq + GSIG + GNX;          // 策展：鎖定學會＋旗艦期刊，依日期自動更新
+  const dis = d.q ? d.q : (d.en + '[tiab]');  // 通用：重點期刊指引搜尋
+  return dis + CORE;
+}
+function pubmedUrl(d){
+  if(d.url) return d.url; // 若已策展特定文件則直接用
+  return 'https://pubmed.ncbi.nlm.nih.gov/?term=' + encodeURIComponent(termCard(d)) + '&sort=date';
+}
+function tsimUrl(d){
+  if(d.tsim) return d.tsim; // 若已策展特定內科學誌文件則直接用
+  // 於台灣內科醫學會官網搜尋《內科學誌》，限指引／共識／建議（排除個案報告與原著）
+  const q = '內科學誌 ' + d.zh + ' (指引 OR 共識 OR 建議) site:tsim.org.tw';
+  return 'https://www.google.com/search?q=' + encodeURIComponent(q);
+}
+const lockSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 7.9-.8"/></svg>';
+const arrowSVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg>';
+
+DISEASES.forEach((d,i)=>{ d._id = 'd'+i; });
+
+/* ---------- build nav + sections ---------- */
+const navEl = document.getElementById('nav');
+const secEl = document.getElementById('sections');
+
+SUBSPECIALTIES.forEach(s=>{
+  const chip = document.createElement('a');
+  chip.href = '#sec-'+s.id; chip.className='chip'; chip.dataset.target=s.id;
+  chip.innerHTML = '<span class="dot" style="background:'+s.color+'"></span>'+s.zh;
+  navEl.appendChild(chip);
+
+  const sec = document.createElement('section');
+  sec.className='sec'; sec.id='sec-'+s.id; sec.style.setProperty('--sc',s.color);
+  sec.dataset.sub=s.id;
+  const list = DISEASES.filter(d=>d.sub===s.id);
+  sec.innerHTML =
+    '<div class="sec-head">'+
+      '<span class="sec-code">'+s.code+'</span>'+
+      '<h2 class="sec-title">'+s.zh+'</h2>'+
+      '<span class="sec-en">'+s.en+'</span>'+
+      '<span class="sec-count" data-count>'+list.length+' 主題</span>'+
+    '</div>'+
+    '<div class="grid">'+ list.map(cardHTML).join('') +'</div>';
+  secEl.appendChild(sec);
+});
+
+function cardHTML(d){
+  const s = subById[d.sub];
+  const curated = !!d.gq;
+  return '<article class="card'+(curated?' curated':'')+'" id="'+d._id+'" data-zh="'+d.zh+'" data-en="'+d.en.toLowerCase()+'" style="--sc:'+s.color+'">'+
+    '<div class="card-top">'+
+      '<div><h3 class="disease">'+d.zh+'</h3><span class="disease-en">'+d.en+
+        (curated?' <span class="curated-tag" title="鎖定學會來源，出新版自動帶入最新版">自動更新</span>':'')+'</span></div>'+
+      '<a class="tw-link" href="'+tsimUrl(d)+'" target="_blank" rel="noopener" title="搜尋內科學誌指引／共識">內科學誌 '+arrowSVG+'</a>'+
+    '</div>'+
+    '<ol class="revs" data-state="idle"><div class="skel"></div><div class="skel s2"></div><div class="skel s3"></div></ol>'+
+    '<div class="card-more"><a href="'+pubmedUrl(d)+'" target="_blank" rel="noopener">'+
+      (curated?'在 PubMed 看更多 ':'在 PubMed 開啟全部指引 ')+arrowSVG+'</a></div>'+
+  '</article>';
+}
+
+/* ---------- stats ---------- */
+document.getElementById('subCount').textContent = SUBSPECIALTIES.length;
+document.getElementById('disCount').textContent = DISEASES.length;
+document.getElementById('jourCount').textContent = JOURNALS.length;
+document.getElementById('yrSpan').textContent = GUIDELINE_YEARS;
+
+/* =====================================================================
+   即時抓取 PubMed 回顧文獻（NCBI E-utilities，支援跨網域）
+   每個疾病：esearch 取近期 PMID → esummary 取題目/期刊/年/DOI/PMC
+   以佇列節流（避免超過 NCBI 速率上限），捲動到才載入，結果快取。
+===================================================================== */
+const MAX_ROWS = 5;
+const cache = {};                 // _id -> [articles]
+const diseaseById = Object.fromEntries(DISEASES.map(d=>[d._id,d]));
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+const queue = []; let running = false;
+function enqueue(fn){ queue.push(fn); pump(); }
+async function pump(){
+  if(running) return; running = true;
+  while(queue.length){ const fn = queue.shift(); try{ await fn(); }catch(e){}; await sleep(600); }
+  running = false;
+}
+
+async function getJSON(url){
+  try{ const r = await fetch(url); if(r.ok) return await r.json(); }catch(e){}
+  await sleep(600);                                   // 一次重試（多半是速率限制）
+  const r2 = await fetch(url); if(!r2.ok) throw new Error('http '+r2.status);
+  return r2.json();
+}
+async function fetchReviews(d){
+  const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+  const n = d.gq ? 2 : MAX_ROWS;             // 策展：最新 2 版；通用：最多 5
+  const sort = (d.gq && !d.ds) ? 'relevance' : 'date';  // 策展預設相關度；ds 旗標者依日期取最新版
+  const es = base+'esearch.fcgi?db=pubmed&retmode=json&sort='+sort+'&retmax='+n+
+             '&term='+encodeURIComponent(termCard(d));
+  const sj = await getJSON(es);
+  const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
+  if(!ids.length) return [];
+  await sleep(150);
+  const sum = base+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',');
+  const uj = await getJSON(sum);
+  const res = uj.result;
+  if(!res) throw new Error('no result');
+  const out = ids.map(id=>{
+    const it = res[id]; if(!it) return null;
+    const aids = it.articleids || [];
+    const doi = (aids.find(a=>a.idtype==='doi')||{}).value;
+    let pmc = (aids.find(a=>a.idtype==='pmc'||a.idtype==='pmcid')||{}).value;
+    if(pmc && !/^PMC/i.test(pmc)) pmc = 'PMC'+pmc;
+    return {
+      title: (it.title||'').replace(/\.$/,''),
+      journal: it.source || '',
+      year: (it.pubdate||'').slice(0,4),
+      pmid: id, doi, pmc, free: !!pmc
+    };
+  }).filter(Boolean);
+  const seen = new Set();
+  return out.filter(a=>{
+    const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,60);
+    if(seen.has(k)) return false; seen.add(k); return true;
+  });
+}
+
+function revRowHTML(a){
+  const href = a.pmc ? 'https://www.ncbi.nlm.nih.gov/pmc/articles/'+a.pmc+'/'
+                     : 'https://pubmed.ncbi.nlm.nih.gov/'+a.pmid+'/';
+  const free = a.free ? '<span class="free-tag">'+lockSVG+' 免費全文</span>' : '';
+  return '<li class="rev" data-free="'+a.free+'">'+
+    '<a class="rev-t" href="'+href+'" target="_blank" rel="noopener">'+escapeHTML(a.title)+'</a>'+
+    '<div class="rev-meta"><span class="rev-jour">'+escapeHTML(a.journal)+'</span>'+
+      (a.year?'<span>'+a.year+'</span>':'')+free+'</div>'+
+  '</li>';
+}
+function escapeHTML(s){ const t=document.createElement('div'); t.textContent=s; return t.innerHTML; }
+
+function renderRevs(d){
+  const card = document.getElementById(d._id); if(!card) return;
+  const ol = card.querySelector('.revs');
+  const arts = cache[d._id] || [];
+  if(!arts.length){
+    ol.dataset.state='empty';
+    ol.innerHTML = '<li class="hint">近 '+GUIDELINE_YEARS+' 年這些重點期刊沒有相關臨床指引。'+
+      '<a href="'+pubmedUrl(d)+'" target="_blank" rel="noopener">改看 PubMed 全部</a></li>';
+    return;
+  }
+  ol.dataset.state='done';
+  ol.innerHTML = arts.map(revRowHTML).join('');
+  applyFreeToRows(card);
+}
+function renderErr(d){
+  const card = document.getElementById(d._id); if(!card) return;
+  const ol = card.querySelector('.revs'); ol.dataset.state='error';
+  ol.innerHTML = '<li class="hint">無法即時載入，'+
+    '<a href="'+pubmedUrl(d)+'" target="_blank" rel="noopener">直接在 PubMed 檢視</a></li>';
+}
+function loadCard(d){
+  const card = document.getElementById(d._id);
+  const ol = card && card.querySelector('.revs');
+  if(!ol || ol.dataset.state!=='idle') return;
+  ol.dataset.state='loading';
+  enqueue(async ()=>{
+    try{ cache[d._id] = await fetchReviews(d); renderRevs(d); }
+    catch(e){ renderErr(d); }
+    if(freeEl.checked) applyFilters();
+  });
+}
+
+/* lazy-load cards as they enter the viewport */
+const loadObs = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){ loadCard(diseaseById[en.target.id]); loadObs.unobserve(en.target); }
+  });
+},{rootMargin:'200px 0px'});
+document.querySelectorAll('.card').forEach(c=>loadObs.observe(c));
+
+/* ---------- search + free filter ---------- */
+const searchEl = document.getElementById('search');
+const freeEl = document.getElementById('freeOnly');
+const emptyEl = document.getElementById('empty');
+
+function applyFreeToRows(card){
+  if(!freeEl.checked) { card.querySelectorAll('.rev').forEach(r=>r.style.display=''); return true; }
+  let n=0;
+  card.querySelectorAll('.rev').forEach(r=>{
+    const ok = r.dataset.free==='true'; r.style.display = ok?'':'none'; if(ok)n++;
+  });
+  return n>0;
+}
+
+function applyFilters(){
+  const q = searchEl.value.trim().toLowerCase();
+  const freeOnly = freeEl.checked;
+  let anyVisible = false;
+
+  document.querySelectorAll('.sec').forEach(sec=>{
+    let visibleInSec = 0;
+    sec.querySelectorAll('.card').forEach(card=>{
+      const matchText = !q || card.dataset.zh.toLowerCase().includes(q) || card.dataset.en.includes(q);
+      let show = matchText;
+      if(show && freeOnly){
+        const d = diseaseById[card.id];
+        if(cache[d._id]){                       // loaded → hide if no free rows
+          show = applyFreeToRows(card);
+        }else{                                    // not loaded yet → load, keep for now
+          loadCard(d); applyFreeToRows(card);
+        }
+      }else if(show){ applyFreeToRows(card); }
+      card.style.display = show ? '' : 'none';
+      if(show) visibleInSec++;
+    });
+    sec.style.display = visibleInSec ? '' : 'none';
+    const c = sec.querySelector('[data-count]');
+    if(c) c.textContent = visibleInSec + ' 主題';
+    if(visibleInSec) anyVisible = true;
+  });
+  emptyEl.classList.toggle('show', !anyVisible);
+}
+searchEl.addEventListener('input', applyFilters);
+freeEl.addEventListener('change', ()=>{
+  // 開啟免費篩選時，主動載入尚未載入的卡片，讓篩選涵蓋全部
+  if(freeEl.checked) DISEASES.forEach(d=>loadCard(d));
+  applyFilters();
+});
+
+/* ---------- modal ---------- */
+const overlay = document.getElementById('overlay');
+const openInfo = document.getElementById('openInfo');
+const closeInfo = document.getElementById('closeInfo');
+function setModal(open){
+  overlay.classList.toggle('open', open);
+  if(open){ closeInfo.focus(); } else { openInfo.focus(); }
+}
+openInfo.addEventListener('click', ()=>setModal(true));
+closeInfo.addEventListener('click', ()=>setModal(false));
+overlay.addEventListener('click', e=>{ if(e.target===overlay) setModal(false); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) setModal(false); });
+
+/* ---------- scroll-spy for nav ---------- */
+const chips = [...document.querySelectorAll('.chip')];
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id = en.target.dataset.sub;
+      chips.forEach(c=>c.classList.toggle('active', c.dataset.target===id));
+    }
+  });
+},{rootMargin:'-45% 0px -50% 0px', threshold:0});
+document.querySelectorAll('.sec').forEach(s=>spy.observe(s));
+</script>
+</body>
+</html>
