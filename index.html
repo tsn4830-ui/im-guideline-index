@@ -468,11 +468,18 @@ const cache = {};                 // _id -> [articles]
 const diseaseById = Object.fromEntries(DISEASES.map(d=>[d._id,d]));
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
+/* NCBI E-utilities API key：有 key 時速率上限由 3/秒放寬到 10/秒。
+   注意：本站純前端，key 會出現在頁面原始碼中（公開可見）。此 key 僅為速率識別碼，
+   不涉及帳號存取，如遭盜用只需到 NCBI 帳號重新產生一把即可作廢舊 key。 */
+const NCBI_KEY = '593ae1c8f250f42d67303e8e12b13845b608';
+const KEY_Q = NCBI_KEY ? '&api_key='+NCBI_KEY : '';
+const THROTTLE = NCBI_KEY ? 180 : 600;             // 有 key 加快節流；無 key 維持保守
+
 const queue = []; let running = false;
 function enqueue(fn){ queue.push(fn); pump(); }
 async function pump(){
   if(running) return; running = true;
-  while(queue.length){ const fn = queue.shift(); try{ await fn(); }catch(e){}; await sleep(600); }
+  while(queue.length){ const fn = queue.shift(); try{ await fn(); }catch(e){}; await sleep(THROTTLE); }
   running = false;
 }
 
@@ -487,12 +494,12 @@ async function fetchReviews(d){
   const n = d.gq ? 2 : MAX_ROWS;             // 策展：最新 2 版；通用：最多 5
   const sort = (d.gq && !d.ds) ? 'relevance' : 'date';  // 策展預設相關度；ds 旗標者依日期取最新版
   const es = base+'esearch.fcgi?db=pubmed&retmode=json&sort='+sort+'&retmax='+n+
-             '&term='+encodeURIComponent(termCard(d));
+             '&term='+encodeURIComponent(termCard(d))+KEY_Q;
   const sj = await getJSON(es);
   const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
   if(!ids.length) return [];
   await sleep(150);
-  const sum = base+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',');
+  const sum = base+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q;
   const uj = await getJSON(sum);
   const res = uj.result;
   if(!res) throw new Error('no result');
