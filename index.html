@@ -568,6 +568,16 @@ const loadObs = new IntersectionObserver((entries)=>{
 },{rootMargin:'200px 0px'});
 document.querySelectorAll('.card').forEach(c=>loadObs.observe(c));
 
+/* Fallback: IntersectionObserver may never fire when the page isn't painted
+   (background tab, prerender) or scrolls oddly on some mobile browsers, which
+   would leave cards stuck on their skeletons forever. Regardless of the observer,
+   progressively load every still-idle card through the throttled queue in DOM
+   order (top-of-page first). loadCard is a no-op once a card has started. */
+function loadAllIdle(){
+  document.querySelectorAll('.card').forEach(c=>loadCard(diseaseById[c.id]));
+}
+window.addEventListener('load', ()=>setTimeout(loadAllIdle, 1200));
+
 /* ---------- search + free filter ---------- */
 const searchEl = document.getElementById('search');
 const freeEl = document.getElementById('freeOnly');
