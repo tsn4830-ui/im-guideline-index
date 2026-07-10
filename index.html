@@ -657,12 +657,21 @@ async function fetchReviews(d){
 }
 
 function revRowHTML(a){
-  // 標題連 PMC 文章頁：全文 HTML 立即顯示（手機好讀、不會變成下載），該頁本身也有 PDF 鈕。
-  // 另在標籤列附小「PDF」鈕直接開全文 PDF。無免費全文者連 PubMed 摘要頁。
-  const url = a.pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/'
-                    : 'https://pubmed.ncbi.nlm.nih.gov/'+a.pmid+'/';
+  // 連結優先序：
+  //  1) 有 PMC 免費全文 → 文章頁（全文 HTML 立即顯示、手機好讀）＋小 PDF 鈕直開 PDF。
+  //  2) 無 PMC 但有 DOI → 出版社官方頁（AHA/ACC/ESC 等學會指引在自家官網多為免費全文，
+  //     例如心臟衰竭指引不在 PMC 但在 ahajournals/oup 可免費看）。
+  //  3) 兩者皆無 → PubMed 摘要頁。
+  let url, pdf = '';
+  if(a.pmc){
+    url = 'https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/';
+    pdf = '<a class="pdf-link" href="https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/pdf/" target="_blank" rel="noopener" title="直接開啟全文 PDF">PDF ↓</a>';
+  }else if(a.doi){
+    url = 'https://doi.org/'+a.doi;
+  }else{
+    url = 'https://pubmed.ncbi.nlm.nih.gov/'+a.pmid+'/';
+  }
   const free = a.free ? '<span class="free-tag">'+lockSVG+' 免費全文</span>' : '';
-  const pdf = a.pmc ? '<a class="pdf-link" href="https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/pdf/" target="_blank" rel="noopener" title="直接開啟全文 PDF">PDF ↓</a>' : '';
   return '<li class="rev" data-free="'+a.free+'">'+
     '<a class="rev-t" href="'+url+'" target="_blank" rel="noopener">'+escapeHTML(a.title)+'</a>'+
     '<div class="rev-meta"><span class="rev-jour">'+escapeHTML(a.journal)+'</span>'+
