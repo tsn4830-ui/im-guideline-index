@@ -120,6 +120,17 @@
   .sec-en{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);letter-spacing:.06em}
   .sec-count{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--ink-3);white-space:nowrap}
 
+  /* 台灣學會指引連結列（每個次專科標題下）*/
+  .tw-soc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0 0 18px;
+    padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+  .tw-soc-label{font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.1em;
+    color:var(--sc);text-transform:uppercase;white-space:nowrap}
+  .tw-soc a{display:inline-flex;align-items:center;gap:4px;font-size:.82rem;font-weight:500;
+    color:var(--ink-2);padding:3px 11px;border-radius:999px;background:var(--paper);
+    border:1px solid var(--line);text-decoration:none;transition:color .15s,border-color .15s}
+  .tw-soc a:hover{color:var(--accent);border-color:var(--accent)}
+  .tw-soc a svg{opacity:.55}
+
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
   .card{
     position:relative;background:var(--surface);border:1px solid var(--line);
@@ -315,6 +326,20 @@ const SUBSPECIALTIES = [
   { id:'neuro',  code:'NEURO',  zh:'神經內科',        en:'Neurology',                  color:'#55606E' },
 ];
 
+/* 台灣各次專科醫學會官方連結（其指引多為中文、不在 PubMed，故直接連學會官網）。
+   增修：改下方對應次專科 id 的陣列即可。網址於 2026-07 逐一驗證可連。 */
+const SOCIETIES = {
+  cardio: [{n:'中華民國心臟學會', u:'https://www.tsoc.org.tw/'}],
+  pulm:   [{n:'台灣胸腔暨重症加護醫學會', u:'https://www.tspccm.org.tw/'}],
+  gi:     [{n:'台灣消化系醫學會', u:'https://www.gest.org.tw/'}, {n:'台灣肝臟研究學會', u:'https://www.tasl.org.tw/'}],
+  nephro: [{n:'台灣腎臟醫學會', u:'https://www.tsn.org.tw/'}],
+  endo:   [{n:'中華民國糖尿病學會', u:'http://www.endo-dm.org.tw/dia_default.asp'}, {n:'中華民國內分泌學會', u:'https://www.endo-dm.org.tw/endo/'}, {n:'糖尿病衛教學會', u:'https://www.tade.org.tw/'}],
+  heme:   [{n:'中華民國血液病學會', u:'https://www.hematology.org.tw/'}, {n:'台灣臨床腫瘤醫學會', u:'https://www.tcos.org.tw/'}],
+  id:     [{n:'台灣感染症醫學會', u:'https://www.idsroc.org.tw/'}],
+  rheum:  [{n:'中華民國風濕病醫學會', u:'https://www.rheumatology.org.tw/'}],
+  neuro:  [{n:'台灣神經學學會', u:'https://www.neuro.org.tw/'}],
+};
+
 const DISEASES = [
   // 心臟內科
   { sub:'cardio', zh:'心臟衰竭', en:'Heart failure', gq:'"heart failure"[ti] AND (AHA[tiab] OR ACC[tiab] OR HFSA[tiab] OR ESC[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
@@ -456,6 +481,11 @@ SUBSPECIALTIES.forEach(s=>{
   sec.className='sec'; sec.id='sec-'+s.id; sec.style.setProperty('--sc',s.color);
   sec.dataset.sub=s.id;
   const list = DISEASES.filter(d=>d.sub===s.id);
+  const socs = SOCIETIES[s.id] || [];
+  const socRow = socs.length ?
+    '<div class="tw-soc"><span class="tw-soc-label">台灣學會指引</span>'+
+      socs.map(x=>'<a href="'+x.u+'" target="_blank" rel="noopener">'+x.n+arrowSVG+'</a>').join('')+
+    '</div>' : '';
   sec.innerHTML =
     '<div class="sec-head">'+
       '<span class="sec-code">'+s.code+'</span>'+
@@ -463,6 +493,7 @@ SUBSPECIALTIES.forEach(s=>{
       '<span class="sec-en">'+s.en+'</span>'+
       '<span class="sec-count" data-count>'+list.length+' 主題</span>'+
     '</div>'+
+    socRow+
     '<div class="grid">'+ list.map(cardHTML).join('') +'</div>';
   secEl.appendChild(sec);
 });
