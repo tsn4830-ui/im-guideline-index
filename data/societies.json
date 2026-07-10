@@ -37,7 +37,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-10"
     },
     "tsn": {
@@ -115,7 +115,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-10"
     },
     "gest": {
@@ -154,7 +154,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-10"
     }
   }
