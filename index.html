@@ -51,7 +51,7 @@
   .brand span{color:var(--accent)}
   .nav-scroll{
     display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
-    -ms-overflow-style:none;margin-left:auto;padding:8px 0;
+    -ms-overflow-style:none;margin-left:auto;padding:8px 0;min-width:0;
   }
   .nav-scroll::-webkit-scrollbar{display:none}
   .chip{
@@ -167,11 +167,28 @@
   .empty{display:none;text-align:center;color:var(--ink-3);padding:56px 0;font-size:.95rem}
   .empty.show{display:block}
 
+  /* ---------- personal brand（阿婷醫師的讀書筆記）---------- */
+  .brand-wrap{display:flex;align-items:center;gap:10px;white-space:nowrap;flex:none}
+  .brand-logo{width:36px;height:36px;border-radius:50%;object-fit:cover;flex:none;
+    background:#fff;box-shadow:0 1px 2px rgba(23,33,30,.18)}
+  .brand-lines{display:flex;flex-direction:column;line-height:1.12}
+  .brand-note{font-family:var(--serif);font-size:.72rem;font-weight:600;color:var(--accent);
+    letter-spacing:.01em}
+  @media(max-width:760px){.brand-note{font-size:.66rem}}
+
   /* ---------- footer ---------- */
   footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--ink-3);font-size:.84rem}
   footer .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
   footer b{color:var(--ink-2);font-weight:600}
   footer .mono{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em}
+  /* footer signature（頁尾署名）*/
+  .sig{display:flex;align-items:center;gap:13px;width:100%;
+    padding-bottom:20px;margin-bottom:18px;border-bottom:1px solid var(--line-2)}
+  .sig-logo{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;
+    background:#fff;box-shadow:var(--shadow)}
+  .sig-name{font-family:var(--serif);font-weight:700;font-size:1.02rem;color:var(--ink);letter-spacing:.01em}
+  .sig-name span{color:var(--accent)}
+  .sig-sub{font-size:.76rem;color:var(--ink-3);margin-top:2px}
 
   /* ---------- modal ---------- */
   .overlay{position:fixed;inset:0;background:rgba(23,33,30,.44);backdrop-filter:blur(2px);
@@ -203,7 +220,13 @@
 
 <div class="topbar">
   <div class="wrap topbar-inner">
-    <div class="brand">內科疾病 <span>指引</span> <em>索引</em></div>
+    <div class="brand-wrap">
+      <img class="brand-logo" src="logo.png" alt="阿婷醫師的讀書筆記" width="36" height="36">
+      <div class="brand-lines">
+        <div class="brand">內科疾病 <span>指引</span> <em>索引</em></div>
+        <div class="brand-note">阿婷醫師的讀書筆記</div>
+      </div>
+    </div>
     <nav class="nav-scroll" id="nav" aria-label="次專科導覽"></nav>
   </div>
 </div>
@@ -242,6 +265,13 @@
 
 <footer>
   <div class="wrap">
+    <div class="sig">
+      <img class="sig-logo" src="logo.png" alt="阿婷醫師的讀書筆記" width="48" height="48">
+      <div>
+        <div class="sig-name">阿婷醫師的<span>讀書筆記</span></div>
+        <div class="sig-sub">曾士婷醫師 · Internal Medicine Guideline Index</div>
+      </div>
+    </div>
     <div>© 2026 <b>內科疾病臨床指引索引</b>　｜　實證內科・臨床指引導覽</div>
     <div class="mono">連結導向各來源合法公開版本 · <a href="https://www.tsim.org.tw/ehc-tsim/s/w/ebook/issueList/index_other/e2d69c71596e444c995fc99048db6c12" target="_blank" rel="noopener" style="color:var(--free)">內科學誌全期目錄</a> · 建議循 DOI 取正式版引用</div>
   </div>
