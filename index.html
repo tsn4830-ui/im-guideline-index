@@ -652,9 +652,11 @@ async function fetchReviews(d){
 }
 
 function revRowHTML(a){
-  const href = a.pmc ? 'https://www.ncbi.nlm.nih.gov/pmc/articles/'+a.pmc+'/'
+  // 有免費全文者直接連向 PMC 的 PDF（點一下就開全文 PDF，可線上看／下載，少一步）；
+  // 無免費全文者連 PubMed 摘要頁（該頁再接出版社全文連結）。
+  const href = a.pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/pdf/'
                      : 'https://pubmed.ncbi.nlm.nih.gov/'+a.pmid+'/';
-  const free = a.free ? '<span class="free-tag">'+lockSVG+' 免費全文</span>' : '';
+  const free = a.free ? '<span class="free-tag">'+lockSVG+' 免費全文 PDF</span>' : '';
   return '<li class="rev" data-free="'+a.free+'">'+
     '<a class="rev-t" href="'+href+'" target="_blank" rel="noopener">'+escapeHTML(a.title)+'</a>'+
     '<div class="rev-meta"><span class="rev-jour">'+escapeHTML(a.journal)+'</span>'+
