@@ -1,0 +1,161 @@
+{
+  "generated": "2026-07-10",
+  "societies": {
+    "daroc": {
+      "name": "中華民國糖尿病學會",
+      "guidelines": "http://www.endo-dm.org.tw/dia/direct/index.asp?t=1",
+      "items": [
+        {
+          "title": "2026第1型糖尿病臨床照護指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=74",
+          "year": 2026
+        },
+        {
+          "title": "2025糖尿病專用配方臨床應用共識",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=69",
+          "year": 2025
+        },
+        {
+          "title": "2024 台灣糖尿病腎臟疾病臨床照護指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=67",
+          "year": 2024
+        },
+        {
+          "title": "臺灣糖尿病年鑑2024第2型糖尿病",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=70",
+          "year": 2024
+        },
+        {
+          "title": "TAIWAN DIABETES LIPID GUIDELINE 2023",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=60",
+          "year": 2023
+        },
+        {
+          "title": "2023孕期糖尿病臨床照護指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=56",
+          "year": 2023
+        }
+      ],
+      "newTitles": [],
+      "ok": true,
+      "checked": "2026-07-10"
+    },
+    "tsn": {
+      "name": "台灣腎臟醫學會",
+      "guidelines": "https://www.tsn.org.tw/guide.html",
+      "items": [
+        {
+          "title": "台灣腎臟病患疫苗接種建議指引",
+          "url": "https://www.tsn.org.tw/archive/20260107/df4c2ca1-dfa8-4a77-9eb8-10b422754204/df4c2ca1-dfa8-4a77-9eb8-10b422754204.pdf",
+          "year": 2026
+        },
+        {
+          "title": "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識",
+          "url": "https://www.tsn.org.tw/archive/20251211/c2494154-cd77-4411-aa92-67f4460ea782/c2494154-cd77-4411-aa92-67f4460ea782.pdf",
+          "year": 2025
+        },
+        {
+          "title": "臺灣慢性腎臟病臨床指引專書_2025更新版",
+          "url": "https://www.tsn.org.tw/archive/20251203/4b7b9dd5-ba8d-405f-bea8-cf6868ba054b/4b7b9dd5-ba8d-405f-bea8-cf6868ba054b.pdf",
+          "year": 2025
+        },
+        {
+          "title": "2020台灣急性腎損傷處置共識",
+          "url": "https://www.tsn.org.tw/archive/20210824/a26f5911-2745-4fbe-9bf8-d5692c1fa15e/a26f5911-2745-4fbe-9bf8-d5692c1fa15e.pdf",
+          "year": 2020
+        },
+        {
+          "title": "2015台灣慢性腎臟病臨床診療指引_國家衛生研究院",
+          "url": "https://www.tsn.org.tw/archive/20210906/0eacf2b1-c5e0-4a56-aaa3-33032a382d43/0eacf2b1-c5e0-4a56-aaa3-33032a382d43.pdf",
+          "year": 2015
+        },
+        {
+          "title": "Early CKD照護整合方案申請說明",
+          "url": "https://www.tsn.org.tw/static/intro_to_early_ckd.html",
+          "year": 0
+        }
+      ],
+      "newTitles": [],
+      "ok": true,
+      "checked": "2026-07-10"
+    },
+    "tade": {
+      "name": "中華民國糖尿病衛教學會",
+      "guidelines": "https://www.tade.org.tw/download/",
+      "items": [
+        {
+          "title": "2026臺灣糖尿病流行病學年鑑",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2026
+        },
+        {
+          "title": "2025臺灣糖尿病特殊族群年鑑",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2025
+        },
+        {
+          "title": "臺灣糖尿病年鑑2024第2型糖尿病",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2024
+        },
+        {
+          "title": "臺灣糖尿病年鑑2023孕期糖尿病」",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2023
+        },
+        {
+          "title": "臺灣糖尿病年鑑2020第1型糖尿病」",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2020
+        },
+        {
+          "title": "臺灣糖尿病年鑑2020第1型糖尿病」簡報檔",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 2020
+        }
+      ],
+      "newTitles": [],
+      "ok": true,
+      "checked": "2026-07-10"
+    },
+    "gest": {
+      "name": "台灣消化系醫學會",
+      "guidelines": "https://www.gest.org.tw/meeting/",
+      "items": [
+        {
+          "title": "大腸癌篩檢指引（The Taiwan Guideline for Colorectal Cancer Screening）-英文版",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=11&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "胃幽門螺旋桿菌篩檢指引-民眾英文版",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=9&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "胃幽門螺旋桿菌篩檢指引-民眾中文版",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=8&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "胃幽門螺旋桿菌篩檢指引-專業英文版",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=7&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "胃幽門螺旋桿菌篩檢指引-專業中文版",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=6&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "大腸癌篩檢指引",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=5&pageNo=1&continue=Y",
+          "year": 0
+        }
+      ],
+      "newTitles": [],
+      "ok": true,
+      "checked": "2026-07-10"
+    }
+  }
+}

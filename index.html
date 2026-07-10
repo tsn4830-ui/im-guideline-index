@@ -130,6 +130,21 @@
     border:1px solid var(--line);text-decoration:none;transition:color .15s,border-color .15s}
   .tw-soc a:hover{color:var(--accent);border-color:var(--accent)}
   .tw-soc a svg{opacity:.55}
+  .tw-soc{flex-direction:column;align-items:stretch}
+  .tw-soc-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+  .tw-soc a.has-new{border-color:var(--free);color:var(--free)}
+  /* 最新指引子列 */
+  .tw-soc-latest{display:flex;flex-direction:column;gap:6px}
+  .tw-soc-latest:not(:empty){margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+  .soc-guide{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 9px;font-size:.83rem;line-height:1.5}
+  .soc-src{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--ink-3);
+    letter-spacing:.03em;white-space:nowrap;flex:none}
+  .soc-guide a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line-2)}
+  .soc-guide a:hover{color:var(--accent);border-color:var(--accent)}
+  .soc-guide a b{color:var(--accent);font-weight:600}
+  .badge-new{font-size:.64rem;font-weight:700;color:#fff;background:var(--free);
+    padding:1px 6px;border-radius:999px;letter-spacing:.04em;white-space:nowrap}
+  .soc-checked{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);margin-top:2px;letter-spacing:.03em}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
   .card{
@@ -328,12 +343,13 @@ const SUBSPECIALTIES = [
 
 /* 台灣各次專科醫學會官方連結（其指引多為中文、不在 PubMed，故直接連學會官網）。
    增修：改下方對應次專科 id 的陣列即可。網址於 2026-07 逐一驗證可連。 */
+/* id 對應 data/societies.json 的鍵（有填 id 者=後端每週自動監測新指引，會顯示徽章）。 */
 const SOCIETIES = {
   cardio: [{n:'中華民國心臟學會', u:'https://www.tsoc.org.tw/'}],
   pulm:   [{n:'台灣胸腔暨重症加護醫學會', u:'https://www.tspccm.org.tw/'}],
-  gi:     [{n:'台灣消化系醫學會', u:'https://www.gest.org.tw/'}, {n:'台灣肝臟研究學會', u:'https://www.tasl.org.tw/'}],
-  nephro: [{n:'台灣腎臟醫學會', u:'https://www.tsn.org.tw/'}],
-  endo:   [{n:'中華民國糖尿病學會', u:'http://www.endo-dm.org.tw/dia_default.asp'}, {n:'中華民國內分泌學會', u:'https://www.endo-dm.org.tw/endo/'}, {n:'糖尿病衛教學會', u:'https://www.tade.org.tw/'}],
+  gi:     [{n:'台灣消化系醫學會', id:'gest', u:'https://www.gest.org.tw/'}, {n:'台灣肝臟研究學會', u:'https://www.tasl.org.tw/'}],
+  nephro: [{n:'台灣腎臟醫學會', id:'tsn', u:'https://www.tsn.org.tw/'}],
+  endo:   [{n:'中華民國糖尿病學會', id:'daroc', u:'http://www.endo-dm.org.tw/dia_default.asp'}, {n:'中華民國內分泌學會', u:'https://www.endo-dm.org.tw/endo/'}, {n:'糖尿病衛教學會', id:'tade', u:'https://www.tade.org.tw/'}],
   heme:   [{n:'中華民國血液病學會', u:'https://www.hematology.org.tw/'}, {n:'台灣臨床腫瘤醫學會', u:'https://www.tcos.org.tw/'}],
   id:     [{n:'台灣感染症醫學會', u:'https://www.idsroc.org.tw/'}],
   rheum:  [{n:'中華民國風濕病醫學會', u:'https://www.rheumatology.org.tw/'}],
@@ -483,8 +499,11 @@ SUBSPECIALTIES.forEach(s=>{
   const list = DISEASES.filter(d=>d.sub===s.id);
   const socs = SOCIETIES[s.id] || [];
   const socRow = socs.length ?
-    '<div class="tw-soc"><span class="tw-soc-label">台灣學會指引</span>'+
-      socs.map(x=>'<a href="'+x.u+'" target="_blank" rel="noopener">'+x.n+arrowSVG+'</a>').join('')+
+    '<div class="tw-soc">'+
+      '<div class="tw-soc-top"><span class="tw-soc-label">台灣學會指引</span>'+
+        socs.map(x=>'<a'+(x.id?' data-soc="'+x.id+'"':'')+' href="'+x.u+'" target="_blank" rel="noopener">'+x.n+arrowSVG+'</a>').join('')+
+      '</div>'+
+      '<div class="tw-soc-latest" data-sub="'+s.id+'"></div>'+
     '</div>' : '';
   sec.innerHTML =
     '<div class="sec-head">'+
@@ -497,6 +516,39 @@ SUBSPECIALTIES.forEach(s=>{
     '<div class="grid">'+ list.map(cardHTML).join('') +'</div>';
   secEl.appendChild(sec);
 });
+
+/* ---------- 台灣學會最新指引（讀 data/societies.json，後端每週更新）---------- */
+function socShortName(n){ return n.replace(/^(社團法人)?(中華民國|台灣|臺灣)/,''); }
+function enhanceSocieties(data){
+  const socs = (data && data.societies) || {};
+  document.querySelectorAll('.tw-soc-latest').forEach(box=>{
+    const list = SOCIETIES[box.dataset.sub] || [];
+    let rows = '', checked = '';
+    list.forEach(x=>{
+      const s = x.id && socs[x.id];
+      const top = s && (s.items||[])[0];
+      if(!top) return;
+      if(s.checked) checked = s.checked;
+      const isNew = (s.newTitles||[]).includes(top.title);
+      if(isNew){
+        const pill = box.closest('.tw-soc').querySelector('[data-soc="'+x.id+'"]');
+        if(pill) pill.classList.add('has-new');
+      }
+      rows += '<div class="soc-guide">'+
+        '<span class="soc-src">'+escapeHTML(socShortName(x.n))+'</span>'+
+        '<a href="'+top.url+'" target="_blank" rel="noopener">'+
+          (top.year?'<b>'+top.year+'</b> ':'')+escapeHTML(top.title)+'</a>'+
+        (isNew?'<span class="badge-new">新</span>':'')+
+      '</div>';
+    });
+    if(rows){
+      box.innerHTML = rows +
+        '<div class="soc-checked">學會官網每週自動檢查'+(checked?'．最後檢查 '+checked.slice(5):'')+'</div>';
+    }
+  });
+}
+fetch('data/societies.json').then(r=>r.ok?r.json():null)
+  .then(d=>{ if(d) enhanceSocieties(d); }).catch(()=>{});
 
 function cardHTML(d){
   const s = subById[d.sub];

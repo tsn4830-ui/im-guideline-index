@@ -1,0 +1,33 @@
+name: check-societies
+
+# 每週抓取台灣各學會指引頁，偵測新指引，更新 data/societies.json。
+# Pages 為「從分支部署」，push 到 main 會自動重建網站。
+on:
+  schedule:
+    - cron: '15 22 * * 0'   # 每週日 22:15 UTC ≈ 台灣週一 06:15
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 檢查台灣學會指引
+        run: python scripts/check_societies.py
+      - name: 有變化才提交
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- data/societies.json; then
+            git add data/societies.json
+            git commit -m "chore: 更新台灣學會指引監測 $(date -u +%F)"
+            git push
+          else
+            echo "本週無變化"
+          fi
