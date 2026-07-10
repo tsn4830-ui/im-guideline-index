@@ -653,21 +653,45 @@ async function fetchReviews(d){
     const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,60);
     if(seen.has(k)) return false; seen.add(k); return true;
   });
-  return deduped.slice(0, d.gq ? 3 : MAX_ROWS);   // 策展最多 3 列（最新＋旗艦）
+  const result = deduped.slice(0, d.gq ? 3 : MAX_ROWS);   // 策展最多 3 列（最新＋旗艦）
+  await enrichOA(result);                                  // 非 PMC 者查 OpenAlex 是否有合法免費全文
+  return result;
+}
+
+/* 用 OpenAlex 找合法免費全文（作者手稿／出版社 OA／典藏庫等），補 PMC 沒收錄的開放取用指引。
+   免 API key、免 email、開放 CORS。有 OA 就標「免費全文」並給直接 PDF。 */
+async function enrichOA(items){
+  await Promise.all(items.map(async a=>{
+    if(a.pmc || !a.doi) return;                            // 已有 PMC 免費、或無 DOI 無從查
+    try{
+      const r = await fetch('https://api.openalex.org/works/https://doi.org/'+a.doi+
+                            '?select=open_access,best_oa_location');
+      if(!r.ok) return;
+      const d = await r.json();
+      const oa = d.open_access || {}, best = d.best_oa_location || {};
+      if(oa.is_oa){
+        a.free = true;
+        a.oaPdf = best.pdf_url || oa.oa_url || '';         // 直接 PDF
+        a.oaUrl = oa.oa_url || best.pdf_url || '';         // 免費落地頁
+      }
+    }catch(e){}
+  }));
 }
 
 function revRowHTML(a){
-  // 連結優先序：
-  //  1) 有 PMC 免費全文 → 文章頁（全文 HTML 立即顯示、手機好讀）＋小 PDF 鈕直開 PDF。
-  //  2) 無 PMC 但有 DOI → 出版社官方頁（AHA/ACC/ESC 等學會指引在自家官網多為免費全文，
-  //     例如心臟衰竭指引不在 PMC 但在 ahajournals/oup 可免費看）。
-  //  3) 兩者皆無 → PubMed 摘要頁。
+  // 連結優先序（都盡量一步到全文／PDF）：
+  //  1) 有 PMC 免費全文 → 文章頁（全文 HTML 立即顯示、手機好讀）＋小 PDF 鈕直開 PMC PDF。
+  //  2) OpenAlex 查到合法免費全文（OA）→ DOI 出版社頁（免費全文）＋小 PDF 鈕直開 OA PDF。
+  //  3) 有 DOI 但非 OA → DOI 出版社頁（可能付費牆，但已是文章本體）。
+  //  4) 皆無 → PubMed 摘要頁。
+  const pdfBtn = href => '<a class="pdf-link" href="'+href+'" target="_blank" rel="noopener" title="直接開啟全文 PDF">PDF ↓</a>';
   let url, pdf = '';
   if(a.pmc){
     url = 'https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/';
-    pdf = '<a class="pdf-link" href="https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/pdf/" target="_blank" rel="noopener" title="直接開啟全文 PDF">PDF ↓</a>';
+    pdf = pdfBtn('https://pmc.ncbi.nlm.nih.gov/articles/'+a.pmc+'/pdf/');
   }else if(a.doi){
     url = 'https://doi.org/'+a.doi;
+    if(a.oaPdf) pdf = pdfBtn(a.oaPdf);                     // OA 直接 PDF
   }else{
     url = 'https://pubmed.ncbi.nlm.nih.gov/'+a.pmid+'/';
   }
