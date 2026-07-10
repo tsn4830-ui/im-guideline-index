@@ -519,14 +519,28 @@ async function getJSON(url){
   const r2 = await fetch(url); if(!r2.ok) throw new Error('http '+r2.status);
   return r2.json();
 }
+async function esearchIds(base, term, sort, retmax){
+  const es = base+'esearch.fcgi?db=pubmed&retmode=json&sort='+sort+'&retmax='+retmax+
+             '&term='+encodeURIComponent(term)+KEY_Q;
+  const sj = await getJSON(es);
+  return (sj.esearchresult && sj.esearchresult.idlist) || [];
+}
 async function fetchReviews(d){
   const base = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
-  const n = d.gq ? 2 : MAX_ROWS;             // 策展：最新 2 版；通用：最多 5
-  const sort = (d.gq && !d.ds) ? 'relevance' : 'date';  // 策展預設相關度；ds 旗標者依日期取最新版
-  const es = base+'esearch.fcgi?db=pubmed&retmode=json&sort='+sort+'&retmax='+n+
-             '&term='+encodeURIComponent(termCard(d))+KEY_Q;
-  const sj = await getJSON(es);
-  const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
+  const term = termCard(d);
+  let ids;
+  if(d.gq){
+    /* 策展：合併「最新（依日期）」＋「最具代表性（依相關度）」，最新優先、去重，
+       這樣像心衰卡片會同時帶到 2026 新共識與 2022/2021 旗艦指引。
+       ds 旗標者純依日期（每年更新的報告，如 ADA Standards、GOLD）。 */
+    const [fresh, top] = await Promise.all([
+      esearchIds(base, term, 'date', d.ds ? 3 : 2),
+      d.ds ? Promise.resolve([]) : esearchIds(base, term, 'relevance', 3)
+    ]);
+    ids = [...new Set([...fresh, ...top])].slice(0, 5);
+  }else{
+    ids = await esearchIds(base, term, 'date', MAX_ROWS);
+  }
   if(!ids.length) return [];
   await sleep(150);
   const sum = base+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q;
@@ -547,10 +561,11 @@ async function fetchReviews(d){
     };
   }).filter(Boolean);
   const seen = new Set();
-  return out.filter(a=>{
+  const deduped = out.filter(a=>{
     const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,60);
     if(seen.has(k)) return false; seen.add(k); return true;
   });
+  return deduped.slice(0, d.gq ? 3 : MAX_ROWS);   // 策展最多 3 列（最新＋旗艦）
 }
 
 function revRowHTML(a){
