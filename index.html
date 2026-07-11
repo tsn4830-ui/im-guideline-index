@@ -126,6 +126,8 @@
   .recent-list a:hover .recent-t{text-decoration:underline;text-underline-offset:2px}
   .recent-date{font-family:var(--mono);font-size:.74rem;font-weight:600;color:var(--accent);
     white-space:nowrap;flex:none;min-width:42px}
+  .recent-date.recent-tw{color:#fff;background:var(--free);border-radius:999px;
+    padding:1px 8px;min-width:0;font-size:.68rem;text-align:center}
   .recent-t{font-size:.9rem;line-height:1.45;flex:1;min-width:0}
   .recent-jour{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);white-space:nowrap;flex:none}
   @media(max-width:640px){.recent-jour{display:none}}
@@ -780,37 +782,60 @@ async function loadRecent(){
   const NX = ' NOT (development[ti] OR framework[ti] OR reporting[ti] OR "life cycle"[ti] OR bundle[ti] OR '+
     'engagement[ti] OR endpoint*[ti] OR methodolog*[ti] OR correction[ti] OR erratum[ti] OR comment[ti] OR reply[ti])';
   const term = SIG + ' AND ' + JQ + NX;
+  let items = [];
   try{
     const sj = await getJSON(eu+'esearch.fcgi?db=pubmed&retmode=json&datetype=edat&reldate=14&retmax=12&sort=date&term='+encodeURIComponent(term)+KEY_Q);
     const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
-    if(!ids.length) return;
-    const uj = await getJSON(eu+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q);
-    const res = uj.result; if(!res) return;
-    const seen = new Set();
-    const items = ids.map(id=>{
-      const it = res[id]; if(!it) return null;
-      const aids = it.articleids||[];
-      const doi = (aids.find(a=>a.idtype==='doi')||{}).value;
-      let pmc = (aids.find(a=>a.idtype==='pmc'||a.idtype==='pmcid')||{}).value;
-      if(pmc && !/^PMC/i.test(pmc)) pmc='PMC'+pmc;
-      const url = pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+pmc+'/'
-                : doi ? 'https://doi.org/'+doi
-                : 'https://pubmed.ncbi.nlm.nih.gov/'+id+'/';
-      return { title:(it.title||'').replace(/\.$/,''), journal:it.source||'',
-               date:(it.sortpubdate||'').slice(5,10), url };
-    }).filter(Boolean).filter(a=>{
-      const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
-      if(seen.has(k)) return false; seen.add(k); return true;
-    }).slice(0,8);
-    if(!items.length) return;
-    document.getElementById('recentList').innerHTML = items.map(a=>
-      '<li><a href="'+a.url+'" target="_blank" rel="noopener">'+
-        '<span class="recent-date">'+a.date+'</span>'+
-        '<span class="recent-t">'+escapeHTML(a.title)+'</span>'+
-        '<span class="recent-jour">'+escapeHTML(a.journal)+'</span>'+
-      '</a></li>').join('');
-    document.getElementById('recent').hidden = false;
+    if(ids.length){
+      const uj = await getJSON(eu+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q);
+      const res = uj.result;
+      if(res){
+        const seen = new Set();
+        items = ids.map(id=>{
+          const it = res[id]; if(!it) return null;
+          const aids = it.articleids||[];
+          const doi = (aids.find(a=>a.idtype==='doi')||{}).value;
+          let pmc = (aids.find(a=>a.idtype==='pmc'||a.idtype==='pmcid')||{}).value;
+          if(pmc && !/^PMC/i.test(pmc)) pmc='PMC'+pmc;
+          const url = pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+pmc+'/'
+                    : doi ? 'https://doi.org/'+doi
+                    : 'https://pubmed.ncbi.nlm.nih.gov/'+id+'/';
+          return { tag:(it.sortpubdate||'').slice(5,10), title:(it.title||'').replace(/\.$/,''),
+                   jour:it.source||'', url };
+        }).filter(Boolean).filter(a=>{
+          const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
+          if(seen.has(k)) return false; seen.add(k); return true;
+        }).slice(0,8);
+      }
+    }
   }catch(e){}
+
+  // 台灣學會監測新偵測到的指引（每週檢查抓到的 newTitles，屬近期更新）也併入，置於最前
+  let tw = [];
+  try{
+    const sr = await fetch('data/societies.json');
+    if(sr.ok){
+      const socs = (await sr.json()).societies || {};
+      Object.keys(socs).forEach(id=>{
+        const s = socs[id];
+        (s.newTitles||[]).forEach(t=>{
+          const it = (s.items||[]).find(x=>x.title===t) || {};
+          tw.push({ isTw:true, tag:'台灣', title:t, url:it.url || s.guidelines,
+                    jour: socShortName(s.name||'') + (it.year?' '+it.year:'') });
+        });
+      });
+    }
+  }catch(e){}
+
+  const all = tw.concat(items);
+  if(!all.length) return;
+  document.getElementById('recentList').innerHTML = all.map(a=>
+    '<li><a href="'+a.url+'" target="_blank" rel="noopener">'+
+      '<span class="recent-date'+(a.isTw?' recent-tw':'')+'">'+escapeHTML(a.tag)+'</span>'+
+      '<span class="recent-t">'+escapeHTML(a.title)+'</span>'+
+      '<span class="recent-jour">'+escapeHTML(a.jour)+'</span>'+
+    '</a></li>').join('');
+  document.getElementById('recent').hidden = false;
 }
 loadRecent();
 
