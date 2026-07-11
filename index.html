@@ -110,6 +110,25 @@
 
   /* ---------- sections ---------- */
   .index{padding:24px 0 60px}
+  /* ---------- 近 2 週更新 ---------- */
+  .recent{margin:8px 0 30px;padding:18px 22px;border:1px solid var(--line);border-radius:14px;
+    background:linear-gradient(180deg,#fff, #F7FBFA);box-shadow:var(--shadow)}
+  .recent-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+  .recent-badge{font-family:var(--mono);font-size:.74rem;font-weight:700;letter-spacing:.06em;
+    color:#fff;background:var(--accent);border-radius:999px;padding:4px 12px}
+  .recent-sub{font-size:.82rem;color:var(--ink-3)}
+  .recent-list{list-style:none;margin:0;padding:0}
+  .recent-list li{border-top:1px solid var(--line-2)}
+  .recent-list li:first-child{border-top:none}
+  .recent-list a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;text-decoration:none;
+    color:var(--ink);transition:color .15s}
+  .recent-list a:hover{color:var(--accent)}
+  .recent-list a:hover .recent-t{text-decoration:underline;text-underline-offset:2px}
+  .recent-date{font-family:var(--mono);font-size:.74rem;font-weight:600;color:var(--accent);
+    white-space:nowrap;flex:none;min-width:42px}
+  .recent-t{font-size:.9rem;line-height:1.45;flex:1;min-width:0}
+  .recent-jour{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);white-space:nowrap;flex:none}
+  @media(max-width:640px){.recent-jour{display:none}}
   .sec{padding-top:26px;scroll-margin-top:76px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:14px 0 18px;
     border-top:1px solid var(--line);position:relative}
@@ -289,6 +308,13 @@
 
 <main class="index">
   <div class="wrap">
+    <section class="recent" id="recent" hidden>
+      <div class="recent-head">
+        <span class="recent-badge">近 2 週更新</span>
+        <span class="recent-sub">重點期刊新發布的臨床指引</span>
+      </div>
+      <ul class="recent-list" id="recentList"></ul>
+    </section>
     <div id="sections"></div>
     <div class="empty" id="empty">找不到符合的疾病，試試其他關鍵字或關閉「只顯示免費全文」。</div>
   </div>
@@ -736,6 +762,57 @@ function loadCard(d){
     if(freeEl.checked) applyFilters();
   });
 }
+
+/* ---------- 近 2 週更新（頂部）：一支 PubMed 查詢抓近 14 天新發布的臨床指引 ---------- */
+async function loadRecent(){
+  const eu = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
+  const JQ = '("N Engl J Med"[ta] OR "Lancet"[ta] OR "JAMA"[ta] OR "BMJ"[ta] OR "Ann Intern Med"[ta] OR '+
+    '"Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta] OR "Hypertension"[ta] OR '+
+    '"Eur Respir J"[ta] OR "Am J Respir Crit Care Med"[ta] OR "Chest"[ta] OR "Gut"[ta] OR "J Hepatol"[ta] OR '+
+    '"Hepatology"[ta] OR "Am J Gastroenterol"[ta] OR "Gastroenterology"[ta] OR "Kidney Int"[ta] OR '+
+    '"J Am Soc Nephrol"[ta] OR "Am J Kidney Dis"[ta] OR "Diabetes Care"[ta] OR "J Clin Endocrinol Metab"[ta] OR '+
+    '"Thyroid"[ta] OR "Lancet Diabetes Endocrinol"[ta] OR "Blood"[ta] OR "J Clin Oncol"[ta] OR '+
+    '"Clin Infect Dis"[ta] OR "Ann Rheum Dis"[ta] OR "Arthritis Rheumatol"[ta] OR "Neurology"[ta] OR '+
+    '"Stroke"[ta] OR "Nat Rev"[ta] OR "Eur J Endocrinol"[ta])';
+  const SIG = '(Guideline[pt] OR "Practice Guideline"[pt] OR "clinical practice guideline"[ti] OR '+
+    '((guideline*[ti] OR consensus[ti] OR "standards of care"[ti]) AND '+
+    '(management[ti] OR treatment[ti] OR diagnosis[ti] OR prevention[ti] OR detection[ti])))';
+  const NX = ' NOT (development[ti] OR framework[ti] OR reporting[ti] OR "life cycle"[ti] OR bundle[ti] OR '+
+    'engagement[ti] OR endpoint*[ti] OR methodolog*[ti] OR correction[ti] OR erratum[ti] OR comment[ti] OR reply[ti])';
+  const term = SIG + ' AND ' + JQ + NX;
+  try{
+    const sj = await getJSON(eu+'esearch.fcgi?db=pubmed&retmode=json&datetype=edat&reldate=14&retmax=12&sort=date&term='+encodeURIComponent(term)+KEY_Q);
+    const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
+    if(!ids.length) return;
+    const uj = await getJSON(eu+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q);
+    const res = uj.result; if(!res) return;
+    const seen = new Set();
+    const items = ids.map(id=>{
+      const it = res[id]; if(!it) return null;
+      const aids = it.articleids||[];
+      const doi = (aids.find(a=>a.idtype==='doi')||{}).value;
+      let pmc = (aids.find(a=>a.idtype==='pmc'||a.idtype==='pmcid')||{}).value;
+      if(pmc && !/^PMC/i.test(pmc)) pmc='PMC'+pmc;
+      const url = pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+pmc+'/'
+                : doi ? 'https://doi.org/'+doi
+                : 'https://pubmed.ncbi.nlm.nih.gov/'+id+'/';
+      return { title:(it.title||'').replace(/\.$/,''), journal:it.source||'',
+               date:(it.sortpubdate||'').slice(5,10), url };
+    }).filter(Boolean).filter(a=>{
+      const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
+      if(seen.has(k)) return false; seen.add(k); return true;
+    }).slice(0,8);
+    if(!items.length) return;
+    document.getElementById('recentList').innerHTML = items.map(a=>
+      '<li><a href="'+a.url+'" target="_blank" rel="noopener">'+
+        '<span class="recent-date">'+a.date+'</span>'+
+        '<span class="recent-t">'+escapeHTML(a.title)+'</span>'+
+        '<span class="recent-jour">'+escapeHTML(a.journal)+'</span>'+
+      '</a></li>').join('');
+    document.getElementById('recent').hidden = false;
+  }catch(e){}
+}
+loadRecent();
 
 /* lazy-load cards as they enter the viewport */
 const loadObs = new IntersectionObserver((entries)=>{
