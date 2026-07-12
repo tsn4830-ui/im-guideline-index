@@ -37,7 +37,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-12"
     },
     "tsn": {
@@ -75,10 +75,7 @@
           "year": 2020
         }
       ],
-      "newTitles": [
-        "臺灣慢性腎臟病環境影響之全面性評估",
-        "2021 TSN PD casebook-CHT version_final_腹膜透析治療 臨床案例解析_中文版電子檔"
-      ],
+      "newTitles": [],
       "ok": true,
       "checked": "2026-07-12"
     },
@@ -118,7 +115,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-12"
     },
     "gest": {
@@ -157,7 +154,7 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
+      "ok": false,
       "checked": "2026-07-12"
     }
   }
