@@ -581,7 +581,7 @@ function enhanceSocieties(data){
     }
   });
 }
-fetch('data/societies.json').then(r=>r.ok?r.json():null)
+fetch('data/societies.json?t='+Date.now(), {cache:'no-store'}).then(r=>r.ok?r.json():null)
   .then(d=>{ if(d) enhanceSocieties(d); }).catch(()=>{});
 
 function cardHTML(d){
@@ -813,7 +813,7 @@ async function loadRecent(){
   // 台灣學會監測新偵測到的指引（每週檢查抓到的 newTitles，屬近期更新）也併入，置於最前
   let tw = [];
   try{
-    const sr = await fetch('data/societies.json');
+    const sr = await fetch('data/societies.json?t='+Date.now(), {cache:'no-store'});
     if(sr.ok){
       const socs = (await sr.json()).societies || {};
       Object.keys(socs).forEach(id=>{
