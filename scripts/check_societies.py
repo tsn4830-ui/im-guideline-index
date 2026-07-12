@@ -34,7 +34,7 @@ SOURCES = [
      "base": "https://www.gest.org.tw/meeting/"},
 ]
 
-KW   = re.compile(r"指引|共識|照護|建議|準則|規範|年鑑|guideline|consensus", re.I)
+KW   = re.compile(r"指引|共識|照護|建議|準則|規範|年鑑|評估|案例|手冊|專書|診療|治療|standard|guideline|consensus", re.I)
 YEAR = re.compile(r"(20[12]\d)")
 NOISE = re.compile(r"報名|登入|會員|購物|首頁|上一頁|下一頁|回上|more|回首頁|search|使用說明", re.I)
 
@@ -80,6 +80,8 @@ def extract(source_html, base, fallback):
                                   source_html, re.S | re.I):
         raw = html.unescape(re.sub(r"<[^>]+>", "", inner)).strip()
         raw = re.sub(r"\s+", " ", raw)
+        # 以指引/文件關鍵字判定（含評估、案例、手冊、專書、診療、治療等），
+        # 避免把學會期刊會訊等帶年份的非指引項目拉進來。
         if not raw or NOISE.search(raw) or not KW.search(raw):
             continue
         ym = YEAR.search(raw)                 # 年份取自原始標題（含檔名年碼，如 202601）

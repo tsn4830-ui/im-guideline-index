@@ -820,6 +820,7 @@ async function loadRecent(){
         const s = socs[id];
         (s.newTitles||[]).forEach(t=>{
           const it = (s.items||[]).find(x=>x.title===t) || {};
+          if(it.year && it.year < new Date().getFullYear()-1) return;   // 只把近年新項目列入「近期更新」
           tw.push({ isTw:true, tag:'台灣', title:t, url:it.url || s.guidelines,
                     jour: socShortName(s.name||'') + (it.year?' '+it.year:'') });
         });

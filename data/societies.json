@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-10",
+  "generated": "2026-07-12",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -37,13 +37,18 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-07-10"
+      "ok": true,
+      "checked": "2026-07-12"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
       "guidelines": "https://www.tsn.org.tw/guide.html",
       "items": [
+        {
+          "title": "臺灣慢性腎臟病環境影響之全面性評估",
+          "url": "https://www.tsn.org.tw/archive/20260210/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3.pdf",
+          "year": 2026
+        },
         {
           "title": "台灣腎臟病患疫苗接種建議指引",
           "url": "https://www.tsn.org.tw/archive/20260107/df4c2ca1-dfa8-4a77-9eb8-10b422754204/df4c2ca1-dfa8-4a77-9eb8-10b422754204.pdf",
@@ -60,24 +65,22 @@
           "year": 2025
         },
         {
+          "title": "2021 TSN PD casebook-CHT version_final_腹膜透析治療 臨床案例解析_中文版電子檔",
+          "url": "https://www.tsn.org.tw/archive/20230223/60c77a55-d6fb-4255-a5ea-fa23a00c71fb/60c77a55-d6fb-4255-a5ea-fa23a00c71fb.pdf",
+          "year": 2021
+        },
+        {
           "title": "2020台灣急性腎損傷處置共識",
           "url": "https://www.tsn.org.tw/archive/20210824/a26f5911-2745-4fbe-9bf8-d5692c1fa15e/a26f5911-2745-4fbe-9bf8-d5692c1fa15e.pdf",
           "year": 2020
-        },
-        {
-          "title": "2015台灣慢性腎臟病臨床診療指引_國家衛生研究院",
-          "url": "https://www.tsn.org.tw/archive/20210906/0eacf2b1-c5e0-4a56-aaa3-33032a382d43/0eacf2b1-c5e0-4a56-aaa3-33032a382d43.pdf",
-          "year": 2015
-        },
-        {
-          "title": "Early CKD照護整合方案申請說明",
-          "url": "https://www.tsn.org.tw/static/intro_to_early_ckd.html",
-          "year": 0
         }
       ],
-      "newTitles": [],
+      "newTitles": [
+        "臺灣慢性腎臟病環境影響之全面性評估",
+        "2021 TSN PD casebook-CHT version_final_腹膜透析治療 臨床案例解析_中文版電子檔"
+      ],
       "ok": true,
-      "checked": "2026-07-10"
+      "checked": "2026-07-12"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -115,8 +118,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-07-10"
+      "ok": true,
+      "checked": "2026-07-12"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -154,8 +157,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-07-10"
+      "ok": true,
+      "checked": "2026-07-12"
     }
   }
 }
