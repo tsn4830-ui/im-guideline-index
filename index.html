@@ -405,7 +405,7 @@ const DISEASES = [
   { sub:'pulm', zh:'慢性阻塞性肺病', en:'COPD', ds:1, gq:'COPD[ti] AND (GOLD[ti] OR "global strategy"[ti]) AND report[ti] AND ("Lancet Respir Med"[ta] OR "Am J Respir Crit Care Med"[ta] OR "Eur Respir J"[ta])' },
   { sub:'pulm', zh:'氣喘', en:'Asthma', gq:'asthma[ti] AND (NAEPP[tiab] OR NHLBI[tiab] OR "expert panel"[ti] OR "focused updates"[ti]) AND "J Allergy Clin Immunol"[ta]' },
   { sub:'pulm', zh:'社區型肺炎', en:'Community-acquired pneumonia', gq:'"community-acquired pneumonia"[ti] AND guideline*[ti] AND "Am J Respir Crit Care Med"[ta]' },
-  { sub:'pulm', zh:'肺栓塞', en:'Pulmonary embolism', gq:'"pulmonary embolism"[ti] AND (ESC[tiab] OR guideline*[ti]) AND ("Eur Heart J"[ta] OR "Eur Respir J"[ta])' },
+  { sub:'pulm', zh:'肺栓塞', en:'Pulmonary embolism', gq:'"pulmonary embolism"[ti] AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab]) AND (Guideline[pt] OR "Practice Guideline"[pt]) AND ("Circulation"[ta] OR "J Am Coll Cardiol"[ta] OR "Eur Heart J"[ta] OR "Eur Respir J"[ta])' },
   { sub:'pulm', zh:'間質性肺病', en:'Interstitial lung disease', gq:'"pulmonary fibrosis"[ti] AND (ATS[tiab] OR ERS[tiab]) AND "Am J Respir Crit Care Med"[ta]' },
   { sub:'pulm', zh:'肺癌', en:'Lung cancer' },
   { sub:'pulm', zh:'阻塞性睡眠呼吸中止症', en:'Obstructive sleep apnea', gq:'"obstructive sleep apnea"[ti] AND (AASM[tiab] OR guideline*[ti]) AND "J Clin Sleep Med"[ta]' },
@@ -901,7 +901,11 @@ function applyFilters(){
   });
   emptyEl.classList.toggle('show', !anyVisible);
 }
-searchEl.addEventListener('input', applyFilters);
+// 支援中文輸入法：組字（注音／拼音）中途不過濾，組完字才過濾，避免中途一直顯示「找不到」
+let imeComposing = false;
+searchEl.addEventListener('compositionstart', ()=>{ imeComposing = true; });
+searchEl.addEventListener('compositionend', ()=>{ imeComposing = false; applyFilters(); });
+searchEl.addEventListener('input', ()=>{ if(!imeComposing) applyFilters(); });
 freeEl.addEventListener('change', ()=>{
   // 開啟免費篩選時，主動載入尚未載入的卡片，讓篩選涵蓋全部
   if(freeEl.checked) DISEASES.forEach(d=>loadCard(d));
