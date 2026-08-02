@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-26",
+  "generated": "2026-08-02",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -38,7 +38,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-07-26"
+      "checked": "2026-08-02"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -55,6 +55,11 @@
           "year": 2026
         },
         {
+          "title": "腎移植患者心血管疾病臨床處置共識",
+          "url": "https://www.tsn.org.tw/archive/20260728/2ded6b2f-829f-42db-b7f7-3e3ec81db306/2ded6b2f-829f-42db-b7f7-3e3ec81db306.pdf",
+          "year": 2026
+        },
+        {
           "title": "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識",
           "url": "https://www.tsn.org.tw/archive/20251211/c2494154-cd77-4411-aa92-67f4460ea782/c2494154-cd77-4411-aa92-67f4460ea782.pdf",
           "year": 2025
@@ -68,16 +73,13 @@
           "title": "2021 TSN PD casebook-CHT version_final_腹膜透析治療 臨床案例解析_中文版電子檔",
           "url": "https://www.tsn.org.tw/archive/20230223/60c77a55-d6fb-4255-a5ea-fa23a00c71fb/60c77a55-d6fb-4255-a5ea-fa23a00c71fb.pdf",
           "year": 2021
-        },
-        {
-          "title": "2020台灣急性腎損傷處置共識",
-          "url": "https://www.tsn.org.tw/archive/20210824/a26f5911-2745-4fbe-9bf8-d5692c1fa15e/a26f5911-2745-4fbe-9bf8-d5692c1fa15e.pdf",
-          "year": 2020
         }
       ],
-      "newTitles": [],
+      "newTitles": [
+        "腎移植患者心血管疾病臨床處置共識"
+      ],
       "ok": true,
-      "checked": "2026-07-26"
+      "checked": "2026-08-02"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -116,7 +118,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-07-26"
+      "checked": "2026-08-02"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -155,7 +157,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-07-26"
+      "checked": "2026-08-02"
     }
   }
 }
