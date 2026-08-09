@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-02",
+  "generated": "2026-08-09",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -38,7 +38,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-08-02"
+      "checked": "2026-08-09"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -75,11 +75,9 @@
           "year": 2021
         }
       ],
-      "newTitles": [
-        "腎移植患者心血管疾病臨床處置共識"
-      ],
+      "newTitles": [],
       "ok": true,
-      "checked": "2026-08-02"
+      "checked": "2026-08-09"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -118,7 +116,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-08-02"
+      "checked": "2026-08-09"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -157,7 +155,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-08-02"
+      "checked": "2026-08-09"
     }
   }
 }
