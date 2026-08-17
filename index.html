@@ -432,7 +432,7 @@ const DISEASES = [
   { sub:'endo', zh:'第1型糖尿病', en:'Type 1 diabetes mellitus', gq:'"type 1 diabetes"[ti] AND adults[ti] AND consensus[ti] AND "Diabetes Care"[ta]' },
   { sub:'endo', zh:'糖尿病酮酸血症', en:'Diabetic ketoacidosis', gq:'hyperglycemic[ti] AND (crisis[ti] OR crises[ti]) AND "Diabetes Care"[ta]' },
   { sub:'endo', zh:'甲狀腺功能亢進症', en:'Hyperthyroidism', gq:'hyperthyroidism[ti] AND thyrotoxicosis[ti] AND "Thyroid"[ta]' },
-  { sub:'endo', zh:'甲狀腺風暴／甲狀腺急症', en:'Thyroid storm', gq:'("thyroid storm"[ti] OR "thyroid emergenc"[ti]) AND ("Thyroid"[ta] OR "Eur Thyroid J"[ta] OR "Endocr J"[ta] OR "J Clin Endocrinol Metab"[ta] OR "Nat Rev Endocrinol"[ta])' },
+  { sub:'endo', zh:'甲狀腺風暴／甲狀腺急症', en:'Thyroid storm', gq:'("thyroid storm"[ti] OR "thyroid emergenc"[ti]) AND ("Thyroid"[ta] OR "Eur Thyroid J"[ta] OR "Endocr J"[ta] OR "J Clin Endocrinol Metab"[ta] OR "Nat Rev Endocrinol"[ta]) NOT (registry[ti] OR "registry-based"[ti] OR "case report"[ti] OR study[ti])' },
   { sub:'endo', zh:'甲狀腺功能低下症', en:'Hypothyroidism', gq:'hypothyroidism[ti] AND treatment[ti] AND "Thyroid"[ta]' },
   { sub:'endo', zh:'甲狀腺結節與甲狀腺癌', en:'Thyroid nodule and cancer', gq:'"American Thyroid Association"[tiab] AND ("differentiated thyroid"[ti] OR "thyroid nodule"[ti] OR "thyroid cancer"[ti]) AND "Thyroid"[ta]' },
   { sub:'endo', zh:'骨質疏鬆症', en:'Osteoporosis', gq:'osteoporosis[ti] AND (ACP[tiab] OR "physicians"[tiab]) AND "Ann Intern Med"[ta]' },
