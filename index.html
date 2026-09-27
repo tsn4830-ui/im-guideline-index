@@ -805,7 +805,8 @@ async function loadRecent(){
                     : 'https://pubmed.ncbi.nlm.nih.gov/'+id+'/';
           return { tag:(it.sortpubdate||'').slice(5,10), title:(it.title||'').replace(/\.$/,''),
                    jour:it.source||'', url };
-        }).filter(Boolean).filter(a=>{
+        }).filter(Boolean).filter(a=>!/^summary for (patients|the patient)/i.test(a.title))
+        .filter(a=>{
           const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
           if(seen.has(k)) return false; seen.add(k); return true;
         }).slice(0,8);
