@@ -1,49 +1,74 @@
 {
-  "generated": "2026-09-21",
+  "generated": "2026-09-27",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
       "guidelines": "http://www.endo-dm.org.tw/dia/direct/index.asp?t=1",
       "items": [
         {
+          "title": "2026年第2型糖尿病臨床照護及疫苗注射最新建議",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=77",
+          "year": 2026
+        },
+        {
+          "title": "台灣成人肥胖及肥胖相關併發症與疾病臨床照護指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=76",
+          "year": 0
+        },
+        {
           "title": "2026第1型糖尿病臨床照護指引",
           "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=74",
           "year": 2026
         },
         {
-          "title": "2025糖尿病專用配方臨床應用共識",
-          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=69",
-          "year": 2025
+          "title": "台灣糖尿病周邊神經病變臨床指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=30",
+          "year": 0
         },
         {
-          "title": "2024 台灣糖尿病腎臟疾病臨床照護指引",
-          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=67",
-          "year": 2024
+          "title": "新冠病毒 (COVID-19) 與糖尿病照護管理",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=45",
+          "year": 0
         },
         {
-          "title": "臺灣糖尿病年鑑2024第2型糖尿病",
-          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=70",
-          "year": 2024
+          "title": "連續性血糖監測CGM/連續性皮下胰島素注射CSII指引",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=41",
+          "year": 0
         },
         {
-          "title": "TAIWAN DIABETES LIPID GUIDELINE 2023",
-          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=60",
-          "year": 2023
+          "title": "台灣糖尿病年鑑2000-2009",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=18",
+          "year": 0
         },
         {
-          "title": "2023孕期糖尿病臨床照護指引",
-          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=56",
-          "year": 2023
+          "title": "甲狀腺眼病變診治建議",
+          "url": "http://www.endo-dm.org.tw/dia/direct/content.asp?BK_KIND=75",
+          "year": 0
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-09-21"
+      "ok": true,
+      "checked": "2026-09-27"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
       "guidelines": "https://www.tsn.org.tw/guide.html",
       "items": [
+        {
+          "title": "Early CKD照護整合方案申請說明",
+          "url": "https://www.tsn.org.tw/static/intro_to_early_ckd.html",
+          "year": 0
+        },
+        {
+          "title": "Pre-ESRD病人照護與衛教計畫申請說明",
+          "url": "https://www.tsn.org.tw/static/intro_to_pre_esrd.html",
+          "year": 0
+        },
+        {
+          "title": "腎臟照護衛教師",
+          "url": "https://www.tsn.org.tw/static/info/ckd.html",
+          "year": 0
+        },
         {
           "title": "臺灣慢性腎臟病環境影響之全面性評估",
           "url": "https://www.tsn.org.tw/archive/20260210/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3.pdf",
@@ -60,33 +85,38 @@
           "year": 2026
         },
         {
-          "title": "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識",
-          "url": "https://www.tsn.org.tw/archive/20251211/c2494154-cd77-4411-aa92-67f4460ea782/c2494154-cd77-4411-aa92-67f4460ea782.pdf",
-          "year": 2025
+          "title": "早期慢性腎臟病照護手冊_111",
+          "url": "https://www.tsn.org.tw/archive/20220207/06160c28-520f-4db4-baee-4adf68ba9e07/06160c28-520f-4db4-baee-4adf68ba9e07.pdf",
+          "year": 0
         },
         {
-          "title": "臺灣慢性腎臟病臨床指引專書_2025更新版",
-          "url": "https://www.tsn.org.tw/archive/20251203/4b7b9dd5-ba8d-405f-bea8-cf6868ba054b/4b7b9dd5-ba8d-405f-bea8-cf6868ba054b.pdf",
-          "year": 2025
-        },
-        {
-          "title": "2021 TSN PD casebook-CHT version_final_腹膜透析治療 臨床案例解析_中文版電子檔",
-          "url": "https://www.tsn.org.tw/archive/20230223/60c77a55-d6fb-4255-a5ea-fa23a00c71fb/60c77a55-d6fb-4255-a5ea-fa23a00c71fb.pdf",
-          "year": 2021
+          "title": "人工腎臟重覆使用作業指引-+050110+FINAL+VERSION",
+          "url": "https://www.tsn.org.tw/archive/20210824/29fd34bb-629b-4868-b835-edfd8dca6a22/29fd34bb-629b-4868-b835-edfd8dca6a22.pdf",
+          "year": 0
         }
       ],
       "newTitles": [],
       "ok": true,
-      "checked": "2026-09-21"
+      "checked": "2026-09-27"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
       "guidelines": "https://www.tade.org.tw/download/",
       "items": [
         {
+          "title": "年鑑/指引",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 0
+        },
+        {
           "title": "2026臺灣糖尿病流行病學年鑑",
           "url": "https://www.tade.org.tw/download/",
           "year": 2026
+        },
+        {
+          "title": "台灣成人肥胖臨床實證指引",
+          "url": "https://www.tade.org.tw/download/",
+          "year": 0
         },
         {
           "title": "2025臺灣糖尿病特殊族群年鑑",
@@ -115,8 +145,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-09-21"
+      "ok": true,
+      "checked": "2026-09-27"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -151,11 +181,21 @@
           "title": "大腸癌篩檢指引",
           "url": "https://www.gest.org.tw/meeting/content.php?type=&id=5&pageNo=1&continue=Y",
           "year": 0
+        },
+        {
+          "title": "消化性潰瘍出血治療共識",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=3&pageNo=1&continue=Y",
+          "year": 0
+        },
+        {
+          "title": "病毒性肝炎的治療準則",
+          "url": "https://www.gest.org.tw/meeting/content.php?type=&id=2&pageNo=1&continue=Y",
+          "year": 0
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-09-21"
+      "ok": true,
+      "checked": "2026-09-27"
     }
   }
 }

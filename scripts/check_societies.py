@@ -95,11 +95,16 @@ def extract(source_html, base, fallback):
         url = absurl(base, href)
         if href.strip().lower().startswith(("javascript", "#", "mailto")) or not href.strip():
             url = fallback
-        items.append({"title": title[:120], "url": url,
+        if re.search(r"/index\.(asp|php|html?|jsp)(\?|$)", url, re.I):
+            continue                          # 分類／清單頁（非單篇指引），排除
+        items.append({"title": title[:120], "url": url, "_i": len(items),
                       "year": int(ym.group(1)) if ym else 0})
-    # 年份新→舊；同年維持頁面順序
-    items.sort(key=lambda x: -x["year"])
-    return items[:6]
+    # 年份新→舊；標題無年份者（如新版肥胖指引）視為當前年、保留頁面順序，避免沉底被截掉
+    cur = datetime.date.today().year
+    items.sort(key=lambda x: (-(x["year"] or cur), x["_i"]))
+    for it in items:
+        it.pop("_i", None)
+    return items[:8]
 
 
 def load_prev():
