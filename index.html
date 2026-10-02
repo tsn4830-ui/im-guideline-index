@@ -787,7 +787,7 @@ async function loadRecent(){
   const term = SIG + ' AND ' + JQ + NX;
   let items = [];
   try{
-    const sj = await getJSON(eu+'esearch.fcgi?db=pubmed&retmode=json&datetype=edat&reldate=14&retmax=12&sort=date&term='+encodeURIComponent(term)+KEY_Q);
+    const sj = await getJSON(eu+'esearch.fcgi?db=pubmed&retmode=json&datetype=edat&reldate=14&retmax=25&sort=date&term='+encodeURIComponent(term)+KEY_Q);
     const ids = (sj.esearchresult && sj.esearchresult.idlist) || [];
     if(ids.length){
       const uj = await getJSON(eu+'esummary.fcgi?db=pubmed&retmode=json&id='+ids.join(',')+KEY_Q);
@@ -809,7 +809,7 @@ async function loadRecent(){
         .filter(a=>{
           const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
           if(seen.has(k)) return false; seen.add(k); return true;
-        }).slice(0,8);
+        }).slice(0,12);
       }
     }
   }catch(e){}
