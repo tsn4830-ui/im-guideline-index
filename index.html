@@ -131,6 +131,9 @@
   .recent-t{font-size:.9rem;line-height:1.45;flex:1;min-width:0}
   .recent-jour{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);white-space:nowrap;flex:none}
   @media(max-width:640px){.recent-jour{display:none}}
+  .recent-sub{font-size:.66rem;font-weight:700;white-space:nowrap;flex:none;
+    padding:0 7px;border-radius:999px;border:1px solid currentColor;line-height:1.55;min-width:0}
+  .recent-sub-gen{color:var(--ink-3);border-color:var(--line)!important}
   .sec{padding-top:26px;scroll-margin-top:76px}
   .sec-head{display:flex;align-items:baseline;gap:14px;padding:14px 0 18px;
     border-top:1px solid var(--line);position:relative}
@@ -767,6 +770,38 @@ function loadCard(d){
   });
 }
 
+/* ---------- 次專科推斷（供「近 2 週更新」標示大致所屬次專科）---------- */
+const SUB_SHORT = {cardio:'心臟',pulm:'胸腔',gi:'腸胃肝膽',nephro:'腎臟',endo:'內分泌',heme:'血液腫瘤',id:'感染',rheum:'風濕免疫',neuro:'神經'};
+const RECENT_JSUB = {  // 期刊 → 次專科（專科期刊直接歸科）
+  'Circulation':'cardio','Eur Heart J':'cardio','J Am Coll Cardiol':'cardio','Hypertension':'cardio',
+  'Eur Respir J':'pulm','Am J Respir Crit Care Med':'pulm','Chest':'pulm',
+  'Gut':'gi','J Hepatol':'gi','Hepatology':'gi','Am J Gastroenterol':'gi','Gastroenterology':'gi',
+  'Kidney Int':'nephro','J Am Soc Nephrol':'nephro','Am J Kidney Dis':'nephro',
+  'Diabetes Care':'endo','Diabetologia':'endo','J Clin Endocrinol Metab':'endo','Thyroid':'endo',
+  'Lancet Diabetes Endocrinol':'endo','Eur J Endocrinol':'endo',
+  'Blood':'heme','J Clin Oncol':'heme','Clin Infect Dis':'id',
+  'Ann Rheum Dis':'rheum','Arthritis Rheumatol':'rheum','Neurology':'neuro','Stroke':'neuro'
+};
+const RECENT_TSUB = [  // 綜合期刊 → 用標題關鍵字推斷
+  [/diabet|glyc(a|e)mi|insulin|thyroid|obesity|lipid|cholesterol|osteoporos|adrenal|pituitary|endocrin|parathyroid/i,'endo'],
+  [/heart|cardiac|coronary|atrial fibrill|valv|aortic|myocard|hypertens|lipoprotein/i,'cardio'],
+  [/kidney|renal|nephro|dialysis|glomerul|\bCKD\b/i,'nephro'],
+  [/pulmonary|respirat|asthma|COPD|pneumonia|\bILD\b|\blung/i,'pulm'],
+  [/hepat|liver|gastro|colon|bowel|pancrea|\bIBD\b|cirrhosis|biliary|esophag|diverticul/i,'gi'],
+  [/cancer|tumou?r|oncolog|myeloma|lymphoma|leuk(e|ae)mia|an(e|ae)mia|thrombocyt|myelodysplas|haematolog|hematolog/i,'heme'],
+  [/infect|antibiotic|sepsis|vaccin|viral|hepatitis [bc]|\bHIV\b|antimicrob|tuberculos|influenza/i,'id'],
+  [/arthritis|rheumat|lupus|\bgout\b|vasculit|spondyl|sj(o|ö)gren|scleroderma|myositis/i,'rheum'],
+  [/stroke|neurolog|dementia|parkinson|epilep|migraine|\bsclerosis\b|seizure|alzheim|neuropath/i,'neuro']
+];
+function recentSub(jour, title){
+  for(const k in RECENT_JSUB){ if(jour && jour.indexOf(k)===0) return RECENT_JSUB[k]; }
+  for(const [re,id] of RECENT_TSUB){ if(re.test(title)) return id; }
+  return '';   // 綜合（跨科或無法判定）
+}
+/* 台灣學會 id → 次專科（糖尿病/衛教=內分泌、腎臟=腎臟、消化系=腸胃肝膽）*/
+const SOC_SUB = {};
+Object.keys(SOCIETIES).forEach(sub=>SOCIETIES[sub].forEach(x=>{ if(x.id) SOC_SUB[x.id]=sub; }));
+
 /* ---------- 近 2 週更新（頂部）：一支 PubMed 查詢抓近 14 天新發布的臨床指引 ---------- */
 async function loadRecent(){
   const eu = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/';
@@ -803,8 +838,8 @@ async function loadRecent(){
           const url = pmc ? 'https://pmc.ncbi.nlm.nih.gov/articles/'+pmc+'/'
                     : doi ? 'https://doi.org/'+doi
                     : 'https://pubmed.ncbi.nlm.nih.gov/'+id+'/';
-          return { tag:(it.sortpubdate||'').slice(5,10), title:(it.title||'').replace(/\.$/,''),
-                   jour:it.source||'', url };
+          const title=(it.title||'').replace(/\.$/,''), jour=it.source||'';
+          return { tag:(it.sortpubdate||'').slice(5,10), title, jour, url, sub:recentSub(jour,title) };
         }).filter(Boolean).filter(a=>!/^summary for (patients|the patient)/i.test(a.title))
         .filter(a=>{
           const k = a.title.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().slice(0,50);
@@ -825,7 +860,7 @@ async function loadRecent(){
         (s.newTitles||[]).forEach(t=>{
           const it = (s.items||[]).find(x=>x.title===t) || {};
           if(it.year && it.year < new Date().getFullYear()-1) return;   // 只把近年新項目列入「近期更新」
-          tw.push({ isTw:true, tag:'台灣', title:t, url:it.url || s.guidelines,
+          tw.push({ isTw:true, tag:'台灣', title:t, url:it.url || s.guidelines, sub:SOC_SUB[id]||'',
                     jour: socShortName(s.name||'') + (it.year?' '+it.year:'') });
         });
       });
@@ -837,6 +872,8 @@ async function loadRecent(){
   document.getElementById('recentList').innerHTML = all.map(a=>
     '<li><a href="'+a.url+'" target="_blank" rel="noopener">'+
       '<span class="recent-date'+(a.isTw?' recent-tw':'')+'">'+escapeHTML(a.tag)+'</span>'+
+      (a.sub ? '<span class="recent-sub" style="color:'+subById[a.sub].color+';border-color:'+subById[a.sub].color+'">'+SUB_SHORT[a.sub]+'</span>'
+             : '<span class="recent-sub recent-sub-gen">綜合</span>')+
       '<span class="recent-t">'+escapeHTML(a.title)+'</span>'+
       '<span class="recent-jour">'+escapeHTML(a.jour)+'</span>'+
     '</a></li>').join('');
