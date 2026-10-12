@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-05",
+  "generated": "2026-10-12",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -48,7 +48,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-05"
+      "checked": "2026-10-12"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -90,14 +90,16 @@
           "year": 0
         },
         {
-          "title": "人工腎臟重覆使用作業指引-+050110+FINAL+VERSION",
-          "url": "https://www.tsn.org.tw/archive/20210824/29fd34bb-629b-4868-b835-edfd8dca6a22/29fd34bb-629b-4868-b835-edfd8dca6a22.pdf",
+          "title": "醫學倫理規範",
+          "url": "https://www.tsn.org.tw/static/medical_guides.html",
           "year": 0
         }
       ],
-      "newTitles": [],
+      "newTitles": [
+        "醫學倫理規範"
+      ],
       "ok": true,
-      "checked": "2026-10-05"
+      "checked": "2026-10-12"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -146,7 +148,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-05"
+      "checked": "2026-10-12"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -195,7 +197,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-05"
+      "checked": "2026-10-12"
     }
   }
 }
