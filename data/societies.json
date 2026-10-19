@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-12",
+  "generated": "2026-10-19",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -48,7 +48,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-12"
+      "checked": "2026-10-19"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -95,11 +95,9 @@
           "year": 0
         }
       ],
-      "newTitles": [
-        "醫學倫理規範"
-      ],
+      "newTitles": [],
       "ok": true,
-      "checked": "2026-10-12"
+      "checked": "2026-10-19"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -148,7 +146,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-12"
+      "checked": "2026-10-19"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -197,7 +195,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-12"
+      "checked": "2026-10-19"
     }
   }
 }
