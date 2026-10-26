@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-19",
+  "generated": "2026-10-26",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -48,7 +48,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-19"
+      "checked": "2026-10-26"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -71,33 +71,35 @@
         },
         {
           "title": "臺灣慢性腎臟病環境影響之全面性評估",
-          "url": "https://www.tsn.org.tw/archive/20260210/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3/597dbe77-3143-4ee5-b348-5b8a9cf9dbf3.pdf",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/14eb5276-bccc-409f-bb45-a1e5c93039e9/14eb5276-bccc-409f-bb45-a1e5c93039e9.pdf",
           "year": 2026
         },
         {
           "title": "台灣腎臟病患疫苗接種建議指引",
-          "url": "https://www.tsn.org.tw/archive/20260107/df4c2ca1-dfa8-4a77-9eb8-10b422754204/df4c2ca1-dfa8-4a77-9eb8-10b422754204.pdf",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/d3d0286a-2a80-4c84-8820-70034f8d4dd6/d3d0286a-2a80-4c84-8820-70034f8d4dd6.pdf",
           "year": 2026
         },
         {
           "title": "腎移植患者心血管疾病臨床處置共識",
-          "url": "https://www.tsn.org.tw/archive/20260728/2ded6b2f-829f-42db-b7f7-3e3ec81db306/2ded6b2f-829f-42db-b7f7-3e3ec81db306.pdf",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/9a267b2b-4318-47fd-8865-4a182612fd1b/9a267b2b-4318-47fd-8865-4a182612fd1b.pdf",
           "year": 2026
         },
         {
           "title": "早期慢性腎臟病照護手冊_111",
-          "url": "https://www.tsn.org.tw/archive/20220207/06160c28-520f-4db4-baee-4adf68ba9e07/06160c28-520f-4db4-baee-4adf68ba9e07.pdf",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/88ccca6e-c1d5-4b69-acfc-7beaf7228479/88ccca6e-c1d5-4b69-acfc-7beaf7228479.pdf",
           "year": 0
         },
         {
-          "title": "醫學倫理規範",
-          "url": "https://www.tsn.org.tw/static/medical_guides.html",
+          "title": "人工腎臟重覆使用作業指引-+050110+FINAL+VERSION",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/bf349c25-ab1e-4f5f-966e-e481a39c45a9/bf349c25-ab1e-4f5f-966e-e481a39c45a9.pdf",
           "year": 0
         }
       ],
-      "newTitles": [],
+      "newTitles": [
+        "人工腎臟重覆使用作業指引-+050110+FINAL+VERSION"
+      ],
       "ok": true,
-      "checked": "2026-10-19"
+      "checked": "2026-10-26"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -146,7 +148,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-19"
+      "checked": "2026-10-26"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -195,7 +197,7 @@
       ],
       "newTitles": [],
       "ok": false,
-      "checked": "2026-10-19"
+      "checked": "2026-10-26"
     }
   }
 }
