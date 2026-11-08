@@ -381,7 +381,7 @@ const SUBSPECIALTIES = [
    增修：改下方對應次專科 id 的陣列即可。網址於 2026-07 逐一驗證可連。 */
 /* id 對應 data/societies.json 的鍵（有填 id 者=後端每週自動監測新指引，會顯示徽章）。 */
 const SOCIETIES = {
-  cardio: [{n:'中華民國心臟學會', u:'https://www.tsoc.org.tw/'}],
+  cardio: [{n:'中華民國心臟學會', u:'https://www.tsoc.org.tw/'}, {n:'台灣高血壓學會', u:'https://www.ths.org.tw/guidelines/'}],
   pulm:   [{n:'台灣胸腔暨重症加護醫學會', u:'https://www.tspccm.org.tw/'}],
   gi:     [{n:'台灣消化系醫學會', id:'gest', u:'https://www.gest.org.tw/'}, {n:'台灣肝臟研究學會', u:'https://www.tasl.org.tw/'}],
   nephro: [{n:'台灣腎臟醫學會', id:'tsn', u:'https://www.tsn.org.tw/guide.html'}],
@@ -397,7 +397,7 @@ const DISEASES = [
   { sub:'cardio', zh:'心臟衰竭', en:'Heart failure', gq:'"heart failure"[ti] AND (AHA[tiab] OR ACC[tiab] OR HFSA[tiab] OR ESC[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
   { sub:'cardio', zh:'冠狀動脈疾病', en:'Coronary artery disease', gq:'("chronic coronary"[ti] OR "coronary artery disease"[ti]) AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
   { sub:'cardio', zh:'心房顫動', en:'Atrial fibrillation', gq:'"atrial fibrillation"[ti] AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab] OR HRS[tiab]) AND ("Circulation"[ta] OR "Eur Heart J"[ta] OR "J Am Coll Cardiol"[ta])' },
-  { sub:'cardio', zh:'高血壓', en:'Hypertension', gq:'("high blood pressure"[ti] OR hypertension[ti]) AND (AHA[tiab] OR ACC[tiab] OR ESC[tiab] OR ESH[tiab]) AND ("Circulation"[ta] OR "Hypertension"[ta] OR "J Am Coll Cardiol"[ta] OR "Eur Heart J"[ta] OR "J Hypertens"[ta])' },
+  { sub:'cardio', zh:'高血壓', en:'Hypertension', gq:'("high blood pressure"[ti] OR hypertension[ti]) AND ( ((AHA[tiab] OR ACC[tiab] OR ESC[tiab] OR ESH[tiab]) AND ("Circulation"[ta] OR "Hypertension"[ta] OR "J Am Coll Cardiol"[ta] OR "Eur Heart J"[ta] OR "J Hypertens"[ta])) OR ("J Formos Med Assoc"[ta] AND (THS[tiab] OR "Taiwan Hypertension Society"[tiab])) )' },
   { sub:'cardio', zh:'高血脂症', en:'Hyperlipidemia', gq:'(cholesterol[ti] OR dyslipidemia[ti] OR hyperlipidemia[ti]) AND (AHA[tiab] OR ACC[tiab]) AND (Guideline[pt] OR "Practice Guideline"[pt]) AND ("Circulation"[ta] OR "J Am Coll Cardiol"[ta])' },
   { sub:'cardio', zh:'瓣膜性心臟病', en:'Valvular heart disease', gq:'"valvular heart disease"[ti] AND (ESC[tiab] OR EACTS[tiab] OR AHA[tiab] OR ACC[tiab]) AND ("Eur Heart J"[ta] OR "Circulation"[ta] OR "J Am Coll Cardiol"[ta])' },
   { sub:'cardio', zh:'心肌病變', en:'Cardiomyopathy', gq:'cardiomyopath*[ti] AND (ESC[tiab] OR AHA[tiab] OR ACC[tiab]) AND ("Eur Heart J"[ta] OR "Circulation"[ta] OR "J Am Coll Cardiol"[ta])' },

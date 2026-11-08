@@ -36,7 +36,7 @@ SOURCES = [
 
 KW   = re.compile(r"指引|共識|照護|建議|準則|規範|年鑑|評估|案例|手冊|專書|診療|治療|standard|guideline|consensus", re.I)
 YEAR = re.compile(r"(20[12]\d)")
-NOISE = re.compile(r"報名|登入|會員|購物|首頁|上一頁|下一頁|回上|more|回首頁|search|使用說明", re.I)
+NOISE = re.compile(r"報名|登入|會員|購物|首頁|上一頁|下一頁|回上|more|回首頁|search|使用說明|倫理規範|醫學倫理", re.I)
 
 
 def clean_title(t):

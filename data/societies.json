@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-02",
+  "generated": "2026-11-08",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -47,8 +47,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-11-02"
+      "ok": true,
+      "checked": "2026-11-08"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -90,14 +90,16 @@
           "year": 0
         },
         {
-          "title": "人工腎臟重覆使用作業指引-+050110+FINAL+VERSION",
-          "url": "https://www.tsn.org.tw/secure/archive/20261021/bf349c25-ab1e-4f5f-966e-e481a39c45a9/bf349c25-ab1e-4f5f-966e-e481a39c45a9.pdf",
-          "year": 0
+          "title": "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識",
+          "url": "https://www.tsn.org.tw/secure/archive/20261021/01b7c3ab-b4b0-4d39-9eea-e78f0420892a/01b7c3ab-b4b0-4d39-9eea-e78f0420892a.pdf",
+          "year": 2025
         }
       ],
-      "newTitles": [],
+      "newTitles": [
+        "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識"
+      ],
       "ok": true,
-      "checked": "2026-11-02"
+      "checked": "2026-11-08"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -145,8 +147,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-11-02"
+      "ok": true,
+      "checked": "2026-11-08"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -194,8 +196,8 @@
         }
       ],
       "newTitles": [],
-      "ok": false,
-      "checked": "2026-11-02"
+      "ok": true,
+      "checked": "2026-11-08"
     }
   }
 }
