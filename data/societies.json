@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-08",
+  "generated": "2026-11-09",
   "societies": {
     "daroc": {
       "name": "中華民國糖尿病學會",
@@ -47,8 +47,8 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
-      "checked": "2026-11-08"
+      "ok": false,
+      "checked": "2026-11-09"
     },
     "tsn": {
       "name": "台灣腎臟醫學會",
@@ -95,11 +95,9 @@
           "year": 2025
         }
       ],
-      "newTitles": [
-        "台灣腎臟醫學會_臺灣非典型溶血性尿毒症候群患者腎臟移植處置共識"
-      ],
+      "newTitles": [],
       "ok": true,
-      "checked": "2026-11-08"
+      "checked": "2026-11-09"
     },
     "tade": {
       "name": "中華民國糖尿病衛教學會",
@@ -147,8 +145,8 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
-      "checked": "2026-11-08"
+      "ok": false,
+      "checked": "2026-11-09"
     },
     "gest": {
       "name": "台灣消化系醫學會",
@@ -196,8 +194,8 @@
         }
       ],
       "newTitles": [],
-      "ok": true,
-      "checked": "2026-11-08"
+      "ok": false,
+      "checked": "2026-11-09"
     }
   }
 }
